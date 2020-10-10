@@ -67,7 +67,11 @@ def normalize(X):
 
 def load_housing_data(path):
     data = pd.read_csv(path)
-    X = [data['CRIM'],
+    n = len(data['CRIM'])
+    X0 = np.ones(n)
+
+    X = [X0,
+         data['CRIM'],
          data['ZN'],
          data['INDUS'],
          data['CHAS'],
@@ -85,6 +89,7 @@ def load_housing_data(path):
     Y = data['MEDV']
     Y = np.array(Y).reshape((len(Y), 1))
 
+    #print(X)
     return X, Y
 
 

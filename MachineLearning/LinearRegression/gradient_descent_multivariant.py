@@ -29,7 +29,6 @@ def init(X, Y):
         sum = 0
         for i in range(1, n):
             theta_i = ((Y[1] - Y[0]) / (X[1][i] - X[0][i] + 1))
-            #print("theta", i, theta_i[0] )
             theta.append(theta_i[0])
             sum += theta_i[0] * X[0][i]
         theta[0] = (Y[0] - sum)[0]
@@ -82,6 +81,7 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
         n = len(X[0])
 
         sum = np.zeros(n)
+
         for j in range(0, n):
             for i in range(0, m):
 
@@ -106,9 +106,11 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
 
         loss = loss / m
         if loss < 600:
+            current_step = step / 2
+        elif loss < 597:
             current_step = step / 10
-        elif loss < 595:
-            current_step = step / 100
+        elif loss < 596:
+            current_step = step / 1000
 
         loop_num += 1
         print("[loop " + str(loop_num) + "]: loss = " + str(loss))
