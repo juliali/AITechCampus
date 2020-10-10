@@ -1,10 +1,10 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import linear_model
 import os
 import pickle
 import pandas as pd
-
+import math
+from utilities import draw_graph, calculate_rmse_ration
 
 def train(X_train, y_train, model_file_path):
 
@@ -26,9 +26,6 @@ def predict(X_test, model_file_path):
     return diabetes_y_pred
 
 
-
-
-
 def main():
     data = pd.read_csv('input' + os.sep + 'salary.csv')
 
@@ -48,8 +45,11 @@ def main():
     model_file_path = "output" + os.sep + "linear_regression_model.sav"
 
     train(X_train, y_train, model_file_path)
-    diabetes_y_pred = predict(X_test, model_file_path)
+    y_predicted = predict(X_test, model_file_path)
 
-    draw_graph(X_test, y_test, diabetes_y_pred)
+    rmse_ration = calculate_rmse_ration(y_test, y_predicted)
+    print(rmse_ration)
+
+    draw_graph(X_test, y_test, y_predicted)
 
 main()

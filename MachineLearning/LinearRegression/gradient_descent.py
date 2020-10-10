@@ -1,7 +1,8 @@
 import sys
 import pandas as pd
 import os
-from utilities import dump, load, draw_graph, predict
+import numpy as np
+from utilities import dump, load, draw_graph, predict, calculate_rmse_ration
 
 
 def is_loop(threshold, max_loop_num, loop_num, loss):
@@ -28,13 +29,13 @@ def init(X, Y):
 
 
 def gen_threshold(Y, ratio):
-    n = 0
+    m = 0
     sum = 0
     for y in Y:
         sum += y
-        n += 1
+        m += 1
 
-    average = sum / n
+    average = sum / m
 
     residual_duration = (average * ratio)
     threshold = residual_duration * residual_duration
@@ -54,7 +55,7 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
         print("threshold and max_loop_num must be set as least one.")
         exit(1)
 
-    n = len(X)
+    m = len(X)
 
     a, b = init(X, Y)
 
@@ -68,20 +69,21 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
         sum_a = 0
         sum_b = 0
 
-        for i in range(0, n):
+        for i in range(0, m):
             sum_a += a + b * X[i] - Y[i]
             sum_b += X[i] * (a + b* X[i] - Y[i])
 
-        print(sum_a/n, sum_b/n)
-        a -=  step * sum_a / n
-        b -=  step * sum_b / n
+        print(sum_a/m, sum_b/m)
+        a -=  step * sum_a / m
+        b -=  step * sum_b / m
 
         loss = 0
 
-        for i in range(0, n):
+        for i in range(0, m):
             residual = a + b * X[i] - Y[i]
             loss += residual * residual
 
+        loss = loss / m
         loop_num += 1
         print("[loop " + str(loop_num) + "]: a = " + str(a) + ", b = " + str(b) + ", loss = " + str(loss))
 
@@ -112,5 +114,8 @@ def main():
 
     draw_graph(X, Y, Y_pred)
 
+    Y = np.array(Y).reshape((len(Y), 1))
+    rmse_ration = calculate_rmse_ration(Y, Y_pred)
+    print(rmse_ration)
 
 main()
