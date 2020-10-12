@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from utilities import dump, load, draw_graph, predict
+from utilities import dump, load, draw_graph
 
 def calculate(X, Y):
 
@@ -42,6 +42,16 @@ def lsm(X, Y, path):
     dump(a, b, path)
 
     return
+
+
+def predict(path, X):
+    a, b = load(path)
+    predicted_y = []
+    for x in X:
+        y = a + b * x
+        predicted_y.append(y)
+
+    return predicted_y
 
 
 def main():

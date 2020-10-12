@@ -2,11 +2,13 @@ import sys
 import pandas as pd
 import os
 import numpy as np
-from utilities import dump_multivariant, load_multivariant, draw_graph, load_housing_data, normalize, split_dataset, calculate_rmse_ration
+from utilities import dump_multivariant, load_multivariant, draw_graph, load_data, preprocess, split_dataset, calculate_rmse_ration
 
 
-def is_loop(threshold, max_loop_num, loop_num, loss):
+def is_loop(threshold, max_loop_num, loop_num, previous_loss, loss):
     looping = True
+    if previous_loss < loss:
+        looping = False
     if threshold > 0:
         if loss <= threshold:
             looping = False
@@ -21,19 +23,21 @@ def init(X, Y):
     if len(X) < 1:
         return None
 
-    theta = []
-    theta.append(0)
+    n = len(X[0].T)
+    #print(n, X[0])
+    theta = np.zeros(n)
 
-    n = len(X[0])
     if len(X) > 1:
         sum = 0
         for i in range(1, n):
-            theta_i = ((Y[1] - Y[0]) / (X[1][i] - X[0][i] + 1))
-            theta.append(theta_i[0])
+            divide = X[1][i] - X[0][i]
+            if divide == 0:
+                divide = 0.01
+
+            theta_i = (Y[1] - Y[0]) / divide
+            theta[i] = theta_i
             sum += theta_i[0] * X[0][i]
         theta[0] = (Y[0] - sum)[0]
-    else:
-        theta = np.zeros(n)
 
     return theta
 
@@ -54,6 +58,7 @@ def gen_threshold(Y, ratio):
 
 
 def train(X, Y, model_path, step, threshold, max_loop_num):
+
     if len(X) <= 0 or len(Y) <=0 or len(X) != len(Y):
         print("Input data invalid!")
         exit(1)
@@ -70,92 +75,91 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
 
     theta = init(X, Y)
 
-    print("initial: theta =", theta)
+    print("\ninitial: theta =", theta, "\n")
 
     loss = sys.maxsize
 
     loop_num = 0
+    previous_loss = loss
 
     current_step = step
-    while is_loop(threshold, max_loop_num, loop_num, loss):
+
+    while is_loop(threshold, max_loop_num, loop_num, previous_loss, loss):
+        previous_loss = loss
         n = len(X[0])
-
         sum = np.zeros(n)
-
         for j in range(0, n):
+            sum[j] = 0
             for i in range(0, m):
-
-                dot_sum_j = 0
-                for k in range(0, n):
-                    dot_sum_j += theta[k] * X[i][k]
-
-            sum[j] += dot_sum_j * X[i][j]
+                sum[j] += (np.dot(X[i], theta) - Y[i]) * X[i][j]
 
         for j in range(0, n):
             theta[j] -= current_step * sum[j]/m
 
         loss = 0
-
         for i in range(0, m):
-            residual = 0
-            for j in range(0, n):
-                residual += theta[j] * X[i][j]
-            residual -= Y[i]
-
+            residual = np.dot(X[i], theta) - Y[i][0]
             loss += residual * residual
 
         loss = loss / m
-        if loss < 600:
+
+        loss_decsend_rate = (previous_loss - loss) / previous_loss
+
+        if 0.00005 < loss_decsend_rate <= 0.0005:
             current_step = step / 2
-        elif loss < 597:
+        elif 0.000005 < loss_decsend_rate <= 0.00005:
             current_step = step / 10
-        elif loss < 596:
-            current_step = step / 1000
+        elif loss_decsend_rate <= 0.000005:
+            current_step = step / 100
 
         loop_num += 1
         print("[loop " + str(loop_num) + "]: loss = " + str(loss))
 
     dump_multivariant(theta, model_path)
+    print("\n")
+    return
 
 
 def predict(path, X):
     model = pd.read_csv(path)
 
     theta = model['theta']
-    #print(theta)
-    #theta = load_multivariant(path)
 
-    predicted_y = []
+    Y_pred = []
     for x in X:
-        y = 0
-        for j in range(0, len(theta)):
-            y += x[j] * theta[j]
-        predicted_y.append(y)
+        y = np.dot(x, theta)
+        Y_pred.append(y)
 
-    return predicted_y
+    Y_pred = np.array(Y_pred).reshape((len(Y_pred), 1))
+
+    return Y_pred
 
 
 def main():
-    X, Y = load_housing_data('input' + os.sep + 'housing.csv')
-    X = normalize(X)
+    ignored_columns = ['ZN','CHAS','NOX','RM','DIS','RAD','TAX','PIRATIO','B','LSTAT']
+    X, Y = load_data('input' + os.sep + 'housing.csv', True, ignored_columns)
+
+    X = preprocess(X, "normalize")
+
+    X_train, y_train, X_test, y_test = split_dataset(X, Y)
 
     path = 'output' + os.sep + 'gradient_descent_multivariant.csv'
 
-    step = 10.0
+    step = 2.0 #0.00005
     print("step:", step)
 
     threshold = gen_threshold(Y, 0.001)
-    print("threshold:" , threshold)
+    print("threshold:", threshold)
 
-    max_loop_num = 1000
+    max_loop_num = 30000
     print("max_loop_num:", max_loop_num)
 
-    train(X, Y, path, step, threshold, max_loop_num)
+    train(X_train, y_train, path, step, threshold, max_loop_num)
 
-    Y_pred = predict(path, X)
+    Y_pred = predict(path, X_test)
 
-    rmse_ration = calculate_rmse_ration(Y, Y_pred)
-    print(rmse_ration)
+    rmse_ration = calculate_rmse_ration(y_test, Y_pred)
+    print("rmse ration is:", rmse_ration)
 
 
 main()

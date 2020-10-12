@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 import os
 import numpy as np
-from utilities import dump, load, draw_graph, predict, calculate_rmse_ration
+from utilities import dump, load, draw_graph, calculate_rmse_ration
 
 
 def is_loop(threshold, max_loop_num, loop_num, loss):
@@ -90,6 +90,15 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
     dump(a, b, model_path)
 
 
+def predict(path, X):
+    a, b = load(path)
+    predicted_y = []
+    for x in X:
+        y = a + b * x
+        predicted_y.append(y)
+
+    return predicted_y
+
 def main():
 
     data = pd.read_csv('input' + os.sep + 'salary.csv')
@@ -112,9 +121,12 @@ def main():
 
     Y_pred = predict(path, X)
 
-    draw_graph(X, Y, Y_pred)
+    #draw_graph(X, Y, Y_pred)
 
     Y = np.array(Y).reshape((len(Y), 1))
+    Y_pred = np.array(Y_pred).reshape((len(Y_pred), 1))
+    print(Y)
+    print(Y_pred)
     rmse_ration = calculate_rmse_ration(Y, Y_pred)
     print(rmse_ration)
 

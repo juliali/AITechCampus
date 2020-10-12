@@ -1,12 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import os
 from sklearn import linear_model
 import pickle
-from sklearn import preprocessing
-import math
-from utilities import load_housing_data, normalize, split_dataset, calculate_rmse_ration
+import numpy as np
+
+from utilities import load_data, preprocess, split_dataset, calculate_rmse_ration
 
 
 def train(X_train, y_train, model_file_path):
@@ -26,16 +23,16 @@ def predict(X_test, model_file_path):
     regr = pickle.load(open(model_file_path, 'rb'))
 
     # 用训练得出的模型进行预测
-    diabetes_y_pred = regr.predict(X_test)
-
-    return diabetes_y_pred
+    Y_pred = regr.predict(X_test)
+    Y_pred = np.array(Y_pred).reshape((len(Y_pred), 1))
+    return Y_pred
 
 
 def main():
     model_file_path = "output" + os.sep + "linear_regression_model_mv.sav"
 
-    X, Y = load_housing_data('input' + os.sep + 'housing.csv')
-    X = normalize(X)
+    X, Y = load_data('input' + os.sep + 'housing.csv', False)
+    X = preprocess(X)
 
     X_train, y_train, X_test, y_test = split_dataset(X, Y)
 
@@ -44,6 +41,6 @@ def main():
 
     rmse_ration = calculate_rmse_ration(y_test, y_predicted)
 
-    print(rmse_ration)
+    print("rmse ratio is:", rmse_ration)
 
 main()

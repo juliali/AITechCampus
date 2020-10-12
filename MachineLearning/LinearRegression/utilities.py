@@ -1,10 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-import os
 import numpy as np
 import math
 from sklearn.model_selection import train_test_split
+
 
 def draw_graph(X, y, y_pred):
     # 将测试结果以图标的方式显示出来
@@ -23,12 +23,14 @@ def dump(a, b, path):
         file.write(str(a) + ',' +  str(b))
     return
 
+
 def load(path):
     model = pd.read_csv(path)
     a = model['a']
     b = model['b']
 
     return a, b
+
 
 def dump_multivariant(theta, path):
     with open(path, "w") as file:
@@ -42,6 +44,7 @@ def dump_multivariant(theta, path):
         file.write(content)
     return
 
+
 def load_multivariant(path):
     model = pd.read_csv(path)
     theta = model[[]]
@@ -49,47 +52,40 @@ def load_multivariant(path):
     return theta
 
 
-def predict(path, X):
-    a, b = load(path)
-    predicted_y = []
-    for x in X:
-        y = a + b * x
-        predicted_y.append(y)
+def preprocess(X, type = "unchange"):
 
-    return predicted_y
+    X_processed = np.asarray(X)
 
+    if type == "normalize":
+        X_processed = preprocessing.normalize(X)
+    elif type == "scale":
+        X_processed = preprocessing.scale(X)
 
-def normalize(X):
-    X_normailized = preprocessing.normalize(X)
-
-    return X_normailized
+    return X_processed
 
 
-def load_housing_data(path):
+def load_data(path, include_x0=True, ignored_columns=None):
     data = pd.read_csv(path)
-    n = len(data['CRIM'])
-    X0 = np.ones(n)
+    cn = len(data.keys())
 
-    X = [X0,
-         data['CRIM'],
-         data['ZN'],
-         data['INDUS'],
-         data['CHAS'],
-         data['NOX'],
-         data['RM'],
-         data['AGE'],
-         data['DIS'],
-         data['RAD'],
-         data['TAX'],
-         data['PIRATIO'],
-         data['B'],
-         data['LSTAT']]
+    X = []
+
+    if include_x0:
+        n = len(data[data.keys()[0]])
+        X0 = np.ones(n)
+        X.append(X0)
+
+    for i in range(0, cn - 1):
+        column_name = data.keys()[i]
+        #print(column_name)
+        if (ignored_columns is None) or (not column_name in ignored_columns):
+            X.append(data[column_name])
 
     X = np.mat(X).T
-    Y = data['MEDV']
+
+    Y = data[data.keys()[cn - 1]]
     Y = np.array(Y).reshape((len(Y), 1))
 
-    #print(X)
     return X, Y
 
 
@@ -99,15 +95,13 @@ def split_dataset(X, Y):
                                                     train_size=0.9,
                                                     test_size = 0.1,
                                                     random_state=42)
-    return  X_train, y_train, X_test, y_test
+    return X_train, y_train, X_test, y_test
 
 
 def calculate_rmse_ration(Y_test, Y_predicted):
     mse = np.mean((Y_test - Y_predicted) ** 2)
     rmse = math.sqrt(mse)
-
     y_mean = np.mean(Y_test)
-
     rmse_ration = rmse / y_mean
 
     return rmse_ration
