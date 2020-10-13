@@ -203,7 +203,7 @@ if __name__ == "__main__":
                         help="Max Loop Number, default is 50000")
     parser.add_argument('--dynamicStep', metavar="D", type=str2bool,
                         default=True,
-                        help="Dyname stepping or static stepping, default is False")
+                        help="Dynamic stepping or static stepping, default is False")
 
     args = parser.parse_args()
 
