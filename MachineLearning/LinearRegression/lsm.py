@@ -1,6 +1,7 @@
 import pandas as pd
 import os
-from utilities import dump, load, draw_graph
+import numpy as np
+from utilities import dump, load, draw_graph, calculate_rmse_ration
 
 def calculate(X, Y):
 
@@ -29,7 +30,6 @@ def calculate(X, Y):
     return total_x, total_y, total_x_square, total_x_y
 
 
-
 def lsm(X, Y, path):
     total_x, total_y, total_x_square, total_x_y = calculate(X, Y)
 
@@ -51,6 +51,7 @@ def predict(path, X):
         y = a + b * x
         predicted_y.append(y)
 
+    predicted_y = np.array(predicted_y).reshape((len(predicted_y), 1))
     return predicted_y
 
 
@@ -68,5 +69,10 @@ def main():
 
     draw_graph(X, Y, Y_pred)
 
+    Y =  np.array(Y).reshape((len(Y), 1))
+    rmse_ration = calculate_rmse_ration(Y, Y_pred)
+    print("rmse ratio:", rmse_ration)
+    return
 
-main()
+if __name__ == "__main__":
+    main()

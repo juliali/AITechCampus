@@ -31,8 +31,10 @@ def predict(X_test, model_file_path):
 def main():
     model_file_path = "output" + os.sep + "linear_regression_model_mv.sav"
 
-    X, Y = load_data('input' + os.sep + 'housing.csv', False)
-    X = preprocess(X)
+    ignored_columns = ['ZN', 'CHAS', 'NOX', 'RM', 'DIS', 'RAD', 'TAX', 'PIRATIO', 'B', 'LSTAT']
+    X, Y = load_data('input' + os.sep + 'housing.csv', False, ignored_columns)
+
+    X = preprocess(X, "normalize")
 
     X_train, y_train, X_test, y_test = split_dataset(X, Y)
 
@@ -41,6 +43,8 @@ def main():
 
     rmse_ration = calculate_rmse_ration(y_test, y_predicted)
 
-    print("rmse ratio is:", rmse_ration)
+    print("rmse ratio:", rmse_ration)
 
-main()
+
+if __name__ == "__main__":
+    main()

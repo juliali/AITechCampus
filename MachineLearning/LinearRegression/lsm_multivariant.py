@@ -25,9 +25,11 @@ def predict(path, X):
 
 
 def main():
-    X, Y = load_data('input' + os.sep + 'housing.csv')
 
-    X = preprocess(X)
+    ignored_columns = ['ZN', 'CHAS', 'NOX', 'RM', 'DIS', 'RAD', 'TAX', 'PIRATIO', 'B', 'LSTAT']
+    X, Y = load_data('input' + os.sep + 'housing.csv', True, ignored_columns)
+
+    X = preprocess(X, "normalize")
 
     X_train, y_train, X_test, y_test = split_dataset(X, Y)
 
@@ -37,7 +39,8 @@ def main():
     y_predicted = predict(path, X_test)
 
     rmse_ration = calculate_rmse_ration(y_test, y_predicted)
-    print("rmse ratio is:", rmse_ration)
+    print("rmse ratio:", rmse_ration)
+    return
 
-
-main()
+if __name__ == "__main__":
+    main()

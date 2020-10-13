@@ -121,13 +121,15 @@ def main():
 
     Y_pred = predict(path, X)
 
-    #draw_graph(X, Y, Y_pred)
+    draw_graph(X, Y, Y_pred)
 
     Y = np.array(Y).reshape((len(Y), 1))
     Y_pred = np.array(Y_pred).reshape((len(Y_pred), 1))
-    print(Y)
-    print(Y_pred)
-    rmse_ration = calculate_rmse_ration(Y, Y_pred)
-    print(rmse_ration)
 
-main()
+    rmse_ration = calculate_rmse_ration(Y, Y_pred)
+    print("rmse ratio:", rmse_ration)
+    return
+
+
+if __name__ == "__main__":
+    main()

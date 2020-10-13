@@ -3,7 +3,7 @@ from sklearn import linear_model
 import os
 import pickle
 import pandas as pd
-import math
+
 from utilities import draw_graph, calculate_rmse_ration
 
 def train(X_train, y_train, model_file_path):
@@ -48,8 +48,10 @@ def main():
     y_predicted = predict(X_test, model_file_path)
 
     rmse_ration = calculate_rmse_ration(y_test, y_predicted)
-    print(rmse_ration)
+    print("rmse ratio:", rmse_ration)
 
     draw_graph(X_test, y_test, y_predicted)
 
-main()
+
+if __name__ == "__main__":
+    main()

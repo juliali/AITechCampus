@@ -1,7 +1,9 @@
+import argparse
+from datetime import datetime
 import sys
 import pandas as pd
-import os
 import numpy as np
+from numpy.distutils.fcompiler import str2bool
 from utilities import dump_multivariant, load_multivariant, draw_graph, load_data, preprocess, split_dataset, calculate_rmse_ration
 
 
@@ -24,7 +26,7 @@ def init(X, Y):
         return None
 
     n = len(X[0].T)
-    #print(n, X[0])
+
     theta = np.zeros(n)
 
     if len(X) > 1:
@@ -57,7 +59,7 @@ def gen_threshold(Y, ratio):
     return threshold
 
 
-def train(X, Y, model_path, step, threshold, max_loop_num):
+def train(X, Y, model_path, step, threshold, max_loop_num, dynamic_step):
 
     if len(X) <= 0 or len(Y) <=0 or len(X) != len(Y):
         print("Input data invalid!")
@@ -103,14 +105,15 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
 
         loss = loss / m
 
-        loss_decsend_rate = (previous_loss - loss) / previous_loss
+        loss_descent_rate = (previous_loss - loss) / previous_loss
 
-        if 0.00005 < loss_decsend_rate <= 0.0005:
-            current_step = step / 2
-        elif 0.000005 < loss_decsend_rate <= 0.00005:
-            current_step = step / 10
-        elif loss_decsend_rate <= 0.000005:
-            current_step = step / 100
+        if dynamic_step:
+            if 0.00005 < loss_descent_rate <= 0.0005:
+                current_step = step / 2
+            elif 0.000005 < loss_descent_rate <= 0.00005:
+                current_step = step / 10
+            elif loss_descent_rate <= 0.000005:
+                current_step = step / 100
 
         loop_num += 1
         print("[loop " + str(loop_num) + "]: loss = " + str(loss))
@@ -135,31 +138,106 @@ def predict(path, X):
     return Y_pred
 
 
-def main():
-    ignored_columns = ['ZN','CHAS','NOX','RM','DIS','RAD','TAX','PIRATIO','B','LSTAT']
-    X, Y = load_data('input' + os.sep + 'housing.csv', True, ignored_columns)
-
-    X = preprocess(X, "normalize")
-
-    X_train, y_train, X_test, y_test = split_dataset(X, Y)
-
-    path = 'output' + os.sep + 'gradient_descent_multivariant.csv'
-
-    step = 2.0 #0.00005
-    print("step:", step)
-
-    threshold = gen_threshold(Y, 0.001)
-    print("threshold:", threshold)
-
-    max_loop_num = 30000
+def main(input_path, output_path, ignored_columns, preprocess_type, training_data_rate, step_length, threshold_rate, max_loop_num, dynamic_step):
+    print("input:", input_path)
+    print("output:", output_path)
+    print("\n")
+    if ignored_columns is not None:
+        print("ignored_columns:", ignored_columns)
+    print("\n")
+    print("preprocess_type:", preprocess_type)
+    print("training_data_rate:", training_data_rate)
+    print("\n")
+    print("threshold_rate:", threshold_rate)
     print("max_loop_num:", max_loop_num)
+    print("step_length:", step_length)
+    if dynamic_step:
+        print("dynamic stepping ...")
+    else:
+        print("static stepping ...")
+    print("\n")
+    start_time = datetime.now()
 
-    train(X_train, y_train, path, step, threshold, max_loop_num)
+    X, Y = load_data(input_path, True, ignored_columns)
 
-    Y_pred = predict(path, X_test)
+    X = preprocess(X, preprocess_type)
+
+    X_train, y_train, X_test, y_test = split_dataset(X, Y, training_data_rate)
+
+    threshold = gen_threshold(Y, threshold_rate)
+
+    train(X_train, y_train, output_path, step_length, threshold, max_loop_num, dynamic_step)
+
+    Y_pred = predict(output_path, X_test)
 
     rmse_ration = calculate_rmse_ration(y_test, Y_pred)
-    print("rmse ration is:", rmse_ration)
+    print("rmse ratio (rmse / y_mean) is:", rmse_ration, "\n")
+
+    end_time = datetime.now()
+
+    execution_duration = end_time - start_time
+
+    print("execution duration:", execution_duration, "\n")
+
+    return
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Train multivariant LR models with gradient descent algorithm')
+
+    parser.add_argument('--input', metavar='I', type=str, required=True,
+                        help='path of input data file')
+    parser.add_argument('--output', metavar='O', type=str, required=True,
+                        help='path of output model file')
+
+    parser.add_argument('--ignoredColumns', metavar='C', type=str,
+                        help='columns ignored from the data file')
+    parser.add_argument('--preprocessType', metavar="P", type=str,
+                        help="Type of preprocess data, e.g. 'unchange', 'normalize', 'scale'")
+    parser.add_argument('--trainingDataRate', metavar="R", type=float,
+                        help="rate of data from whole data as training data")
+    parser.add_argument('--stepLength', metavar="S", type=float, required=True,
+                        help="length of a step, default is 2.0")
+    parser.add_argument('--thresholdRate', metavar="T", type=float,
+                        help="threshold rate of stopping looping, default is 0.001")
+    parser.add_argument('--maxLoopNumber', metavar="M", type=float,
+                        help="Max Loop Number, default is 50000")
+    parser.add_argument('--dynamicStep', metavar="D", type=str2bool,
+                        default=True,
+                        help="Dyname stepping or static stepping, default is False")
+
+    args = parser.parse_args()
+
+    ignored_columns = None
+
+    type = "unchange"
+    training_data_rate = 0.9
+    threshold_rate = 0.001
+    max_loop_num = 50000
+
+    dynamic = True
+
+    input_path = args.input
+    output_path = args.output
+
+    if not args.ignoredColumns is None:
+        ignored_columns = str(args.ignoredColumns).split(",")
+
+    if not args.preprocessType is None:
+        type = args.preprocessType
+
+    if not args.trainingDataRate is None:
+        training_data_rate = args.trainingDataRate
 
 
-main()
+    step_length = args.stepLength
+
+    if not args.thresholdRate is None:
+        threshold_rate = args.thresholdRate
+
+    if not args.maxLoopNumber is None:
+        max_loop_num = args.maxLoopNumber
+
+    if not args.dynamicStep is None:
+        dynamic = bool(args.dynamicStep)
+
+    main(input_path, output_path, ignored_columns, type, training_data_rate, step_length, threshold_rate, max_loop_num, dynamic)

@@ -77,7 +77,6 @@ def load_data(path, include_x0=True, ignored_columns=None):
 
     for i in range(0, cn - 1):
         column_name = data.keys()[i]
-        #print(column_name)
         if (ignored_columns is None) or (not column_name in ignored_columns):
             X.append(data[column_name])
 
@@ -89,13 +88,20 @@ def load_data(path, include_x0=True, ignored_columns=None):
     return X, Y
 
 
-
-def split_dataset(X, Y):
-    X_train, X_test, y_train, y_test = train_test_split(X, Y,
-                                                    train_size=0.9,
-                                                    test_size = 0.1,
+def split_dataset(X, Y, train_rate = 0.9):
+    if train_rate == 1.0:
+        X_train = X
+        X_test = X
+        y_train = Y
+        y_test = Y
+        return X_train, y_train, X_test, y_test
+    else:
+        test_rate = 1.0 - float(train_rate)
+        X_train, X_test, y_train, y_test = train_test_split(X, Y,
+                                                    train_size=train_rate,
+                                                    test_size = test_rate,
                                                     random_state=42)
-    return X_train, y_train, X_test, y_test
+        return X_train, y_train, X_test, y_test
 
 
 def calculate_rmse_ration(Y_test, Y_predicted):
