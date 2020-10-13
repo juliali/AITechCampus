@@ -40,6 +40,6 @@ def get_speech(access_token,text):
     
     
 if __name__ == "__main__":
-    subscription_key = '6081382052df493a9d5cd3123d09f12f'
+    subscription_key = 'YOUR SUBSCRIPTION KEY'
     access_token = get_token(subscription_key)
     get_speech(access_token,sys.argv[1])
