@@ -4,7 +4,8 @@ import sys
 import pandas as pd
 import numpy as np
 from numpy.distutils.fcompiler import str2bool
-from utilities import dump_multivariant, load_multivariant, draw_graph, load_data, preprocess, split_dataset, calculate_rmse_ration
+from utilities import dump_multivariant, load_data, preprocess, split_dataset, \
+    calculate_rmse_ration
 
 
 def is_loop(threshold, max_loop_num, loop_num, previous_loss, loss):
@@ -60,8 +61,7 @@ def gen_threshold(Y, ratio):
 
 
 def train(X, Y, model_path, step, threshold, max_loop_num, dynamic_step):
-
-    if len(X) <= 0 or len(Y) <=0 or len(X) != len(Y):
+    if len(X) <= 0 or len(Y) <= 0 or len(X) != len(Y):
         print("Input data invalid!")
         exit(1)
 
@@ -89,14 +89,14 @@ def train(X, Y, model_path, step, threshold, max_loop_num, dynamic_step):
     while is_loop(threshold, max_loop_num, loop_num, previous_loss, loss):
         previous_loss = loss
         n = len(X[0])
-        sum = np.zeros(n)
-        for j in range(0, n):
-            sum[j] = 0
+        gradient = np.zeros(n)
+        for k in range(0, n):
+            gradient[k] = 0
             for i in range(0, m):
-                sum[j] += (np.dot(X[i], theta) - Y[i]) * X[i][j]
+                gradient[k] += (np.dot(X[i], theta) - Y[i]) * X[i][k]
 
-        for j in range(0, n):
-            theta[j] -= current_step * sum[j]/m
+        for k in range(0, n):
+            theta[k] -= current_step * gradient[k] / m
 
         loss = 0
         for i in range(0, m):
@@ -138,7 +138,8 @@ def predict(path, X):
     return Y_pred
 
 
-def main(input_path, output_path, ignored_columns, preprocess_type, training_data_rate, step_length, threshold_rate, max_loop_num, dynamic_step):
+def main(input_path, output_path, ignored_columns, preprocess_type, training_data_rate, step_length, threshold_rate,
+         max_loop_num, dynamic_step):
     print("input:", input_path)
     print("output:", output_path)
     print("\n")
@@ -181,6 +182,7 @@ def main(input_path, output_path, ignored_columns, preprocess_type, training_dat
 
     return
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train multivariant LR models with gradient descent algorithm')
 
@@ -209,7 +211,7 @@ if __name__ == "__main__":
 
     ignored_columns = None
 
-    type = "unchange"
+    dp_type = "unchange"
     training_data_rate = 0.9
     threshold_rate = 0.001
     max_loop_num = 50000
@@ -223,11 +225,10 @@ if __name__ == "__main__":
         ignored_columns = str(args.ignoredColumns).split(",")
 
     if not args.preprocessType is None:
-        type = args.preprocessType
+        dp_type = args.preprocessType
 
     if not args.trainingDataRate is None:
         training_data_rate = args.trainingDataRate
-
 
     step_length = args.stepLength
 
@@ -240,4 +241,5 @@ if __name__ == "__main__":
     if not args.dynamicStep is None:
         dynamic = bool(args.dynamicStep)
 
-    main(input_path, output_path, ignored_columns, type, training_data_rate, step_length, threshold_rate, max_loop_num, dynamic)
+    main(input_path, output_path, ignored_columns, dp_type, training_data_rate, step_length, threshold_rate, max_loop_num,
+         dynamic)

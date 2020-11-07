@@ -3,12 +3,13 @@ import os
 import numpy as np
 from utilities import dump, load, draw_graph, calculate_rmse_ration
 
+
 def calculate(X, Y):
 
     len_x = len(X)
     len_y = len(Y)
 
-    if (len_x <= 0 or len_y <= 0 or len_x != len_y):
+    if len_x <= 0 or len_y <= 0 or len_x != len_y:
         print("Input data is invalid.")
         exit(1)
 
@@ -32,12 +33,10 @@ def calculate(X, Y):
 
 def lsm(X, Y, path):
     total_x, total_y, total_x_square, total_x_y = calculate(X, Y)
-
     n = len(X)
 
-    b = (total_x_y - (1/n)*total_x *total_y) / (total_x_square - (1/n)*(total_x * total_x))
-
-    a = ((1/n)* total_y - b * (1/n) * total_x)
+    b = (total_x_y - (1/n) * total_x * total_y) / (total_x_square - (1/n) * (total_x * total_x))
+    a = ((1/n) * total_y - b * (1/n) * total_x)
 
     dump(a, b, path)
 
@@ -69,7 +68,7 @@ def main():
 
     draw_graph(X, Y, Y_pred)
 
-    Y =  np.array(Y).reshape((len(Y), 1))
+    Y = np.array(Y).reshape((len(Y), 1))
     rmse_ration = calculate_rmse_ration(Y, Y_pred)
     print("rmse ratio:", rmse_ration)
     return

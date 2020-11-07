@@ -42,6 +42,7 @@ def gen_threshold(Y, ratio):
 
     return threshold
 
+
 def train(X, Y, model_path, step, threshold, max_loop_num):
     if len(X) <= 0 or len(Y) <=0 or len(X) != len(Y):
         print("Input data invalid!")
@@ -66,16 +67,16 @@ def train(X, Y, model_path, step, threshold, max_loop_num):
     loop_num = 0
 
     while is_loop(threshold, max_loop_num, loop_num, loss):
-        sum_a = 0
-        sum_b = 0
+        gradient_a = 0
+        gradient_b = 0
 
         for i in range(0, m):
-            sum_a += a + b * X[i] - Y[i]
-            sum_b += X[i] * (a + b* X[i] - Y[i])
+            gradient_a += a + b * X[i] - Y[i]
+            gradient_b += X[i] * (a + b* X[i] - Y[i])
 
-        print(sum_a/m, sum_b/m)
-        a -=  step * sum_a / m
-        b -=  step * sum_b / m
+        print(gradient_a/m, gradient_b/m)
+        a -= step * gradient_a / m
+        b -= step * gradient_b / m
 
         loss = 0
 
