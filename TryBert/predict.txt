@@ -1,5 +1,4 @@
-predict:
- python run_squad.py --vocab_file=model\chinese_L-12_H-768_A-12\vocab.txt `
+python run_squad.py --vocab_file=model\chinese_L-12_H-768_A-12\vocab.txt `
   --bert_config_file=model\chinese_L-12_H-768_A-12\bert_config.json `
   --init_checkpoint=output\model\model.ckpt-0 `
   --do_train=False --do_predict=True `
