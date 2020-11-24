@@ -5,4 +5,4 @@
   --predict_file=data\test.json `
   --train_batch_size=4 --learning_rate=3e-5 --num_train_epochs=1 `
   --max_seq_length=450 --doc_stride=128 `
-  --output_dir=output\new_result --version_2_with_negative=True --max_answer_length=450 
+  --output_dir=output\result --version_2_with_negative=True --max_answer_length=450 
