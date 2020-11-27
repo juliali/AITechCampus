@@ -1,8 +1,0 @@
- python run_squad.py --vocab_file=model\chinese_L-12_H-768_A-12\vocab.txt `
-  --bert_config_file=model\chinese_L-12_H-768_A-12\bert_config.json `
-  --init_checkpoint=output\model\model.ckpt-4 `
-  --do_train=False --do_predict=True `
-  --predict_file=data\test.json `
-  --train_batch_size=4 --learning_rate=3e-5 --num_train_epochs=1 `
-  --max_seq_length=450 --doc_stride=128 `
-  --output_dir=output\result --version_2_with_negative=True --max_answer_length=450 
