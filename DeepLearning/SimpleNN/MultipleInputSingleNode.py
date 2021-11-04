@@ -4,9 +4,9 @@ import numpy as np
 
 
 class MultipleInputSingleNode:
-    def __init__(self, dimension_num, alpha, max_loop_num, loss_threshold):
-        self.w = np.random.uniform(size=(dimension_num + 1,))
-        self.dimension_num = dimension_num
+    def __init__(self, feature_num, alpha, max_loop_num, loss_threshold):
+        self.w = np.random.uniform(size=(feature_num + 1,))
+        self.feature_num = feature_num
         self.alpha = alpha
         self.max_loop_num = max_loop_num
         self.loss_threshold = loss_threshold
@@ -20,13 +20,13 @@ class MultipleInputSingleNode:
 
     def __forward(self, X):
         z = self.w[0]
-        for i in range(0, self.dimension_num):
+        for i in range(0, self.feature_num):
             z += self.w[i+1] * float(X[i])
         a = self.__active(z)
         return a
 
     def __backward(self, X, y):
-        for i in range(0, self.dimension_num):
+        for i in range(0, self.feature_num):
             self.w[i + 1] -= self.alpha * (self.__forward(X) - float(y)) * float(X[i])
         self.w[0] -= self.alpha * (self.__forward(X) - y)
 
