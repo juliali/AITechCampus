@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import math
+import pandas as pd
 
 
 def convert_array_to_vertical_matrix(a):
@@ -202,6 +203,7 @@ class FCNN():
         return
 
     def forword(self, inputData):
+        print(inputData)
         currentInput = inputData
         for aLayer in self.layerArray:
             currentOutput = self.forword(currentInput)
@@ -244,14 +246,14 @@ class FCNN():
         return loss
 
 
-def trainFCNN(inputDatas, labelData, maxEpochNum, threshold, stepSize):
+def trainFCNN(inputDatas, labelDatas, maxEpochNum, threshold, stepSize):
     featureNum = len(inputDatas[0])
-    layerOne = FCLayer(False, 2, featureNum)
-    layerTwo = FCLayer(True, 3, 2)
+    #layerOne = FCLayer(False, 2, featureNum)
+    layerTwo = FCLayer(True, featureNum, 1)
 
     nn = FCNN()
 
-    nn.addLayer(layerOne)
+    #nn.addLayer(layerOne)
     nn.addLayer(layerTwo)
 
     loss = 100.0
@@ -262,7 +264,7 @@ def trainFCNN(inputDatas, labelData, maxEpochNum, threshold, stepSize):
             output = nn.forword(inputData)
             nn.backword(stepSize)
 
-        loss = nn.countLoss(labelData, output)
+        loss = nn.countLoss(labelDatas, output)
         loopNum += 1
 
     print("Final Loss:", loss)
@@ -270,12 +272,14 @@ def trainFCNN(inputDatas, labelData, maxEpochNum, threshold, stepSize):
 
     return nn
 
-def predictFCNN(nn, inputDatas):
+def predictFCNN(nn, inputDatas, labelDatas):
 
     for inputData in inputDatas:
         output = nn.forword(inputData)
         print(output)
 
+    loss = nn.countLoss(labelDatas, output)
+    print(loss)
     return
 
 
@@ -298,8 +302,17 @@ m3 = matrix_multiplication(m1, m2)
 #print(m3)
 
 m4 = convert_array_to_vertical_matrix(a1)
-print(m4)
+#print(m4)
 m5 = matrix_transfer(m4)
-print(m5)
+#print(m5)
 
+
+file_path = "data\\data_banknote_authentication.txt"
+
+data = pd.read_csv(file_path, sep=",", header=None)
+
+list_X = np.stack([data[0].values, data[1].values, data[2].values, data[3].values], axis=1)
+list_X = list_X.reshape(-1, 4)
+print(list_X)
+list_y = data[4]
 
