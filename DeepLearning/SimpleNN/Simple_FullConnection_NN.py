@@ -216,7 +216,7 @@ class FCNN():
         WNext = None
         for i in range(layerNum - 1, -1, -1):
             aLayer = self.layerArray[i]
-            dZNext, WNext = aLayer.backword(inputData, dZNext, WNext)
+            dZNext, WNext = aLayer.backward(inputData, dZNext, WNext)
 
         return
 
