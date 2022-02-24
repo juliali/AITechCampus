@@ -278,7 +278,7 @@ def predictFCNN(nn, inputDatas, labelDatas):
         output = nn.forword(inputData)
         print(output)
 
-    loss = nn.countLoss(labelDatas, output)
+    loss = nn.count_loss(labelDatas, output)
     print(loss)
     return
 
