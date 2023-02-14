@@ -1,0 +1,167 @@
+父亲，James Potter，Harry Potter
+
+母亲，Lily Potter，Harry Potter
+
+父亲，Arthur Weasley，Ron Weasley、Fred Weasley、George Weasley、Ginny Weasley
+
+母亲，Molly Weasley，Ron Weasley、Fred Weasley、George Weasley、Ginny Weasley
+
+父亲，Xenophilius Lovegood，Luna Lovegood
+
+伯父，Sirius Black，Harry Potter
+
+叔叔，Vernon Dursley， Dudley Dursley
+
+姨妈，Petunia Dursley，Dudley Dursley
+
+丈夫，Harry Potter，Ginny Weasley
+
+朋友，Ron Weasley，Harry Potter、Hermione Granger
+
+朋友，Hermione Granger，Harry Potter、Ron Weasley
+
+导师，Albus Dumbledore，Harry Potter、Ron Weasley、Hermione Granger
+
+教师，Severus Snape，Harry Potter、Ron Weasley、Hermione Granger
+
+教师，Remus Lupin，Harry Potter、Ron Weasley、Hermione Granger
+
+教师，Rubeus Hagrid， Harry Potter、Ron Weasley、Hermione Granger
+
+教师，Sybill Trelawney， Harry Potter、Ron Weasley、Hermione Granger
+
+教师，Olympe Maxime，霍格沃茨学生
+
+敌人，Lord Voldemort，Harry Potter
+
+敌人，Bellatrix Lestrange， Harry Potter、Ron Weasley、Hermione Granger
+
+敌人，Draco Malfoy， Harry Potter、Ron Weasley、Hermione Granger
+
+兄弟，George Weasley，Fred Weasley
+
+兄弟，Percy Weasley，Ron Weasley、Fred Weasley、George Weasley、Ginny Weasley
+
+朋友，Luna Lovegood，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Dudley Dursley，Harry Potter
+
+同学，Neville Longbottom，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Cho Chang，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Cedric Diggory，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Viktor Krum，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Draco Malfoy，Harry Potter、Ron Weasley、Hermione Granger
+
+同学，Seamus Finnigan，Harry Potter、Ron Weasley、Hermione Granger
+
+兄弟，Regulus Black，Sirius Black
+
+朋友，James Potter，Sirius Black、Remus Lupin
+
+朋友，Lily Evans，Sirius Black、Remus Lupin
+
+朋友，Nymphadora Tonks，Remus Lupin
+
+敌人，Bellatrix Lestrange，Narcissa Malfoy
+
+敌人，Lucius Malfoy，Narcissa Malfoy
+
+婆婆，Walburga Black，Sirius Black
+
+祖父，Phineas Nigellus Black，Sirius Black
+
+敌人，Peter Pettigrew，Sirius Black
+
+合作伙伴，Ron Weasley，Harry Potter、Hermione Granger
+
+恋人，Ginny Weasley，Harry Potter
+
+前任恋人，Cho Chang，Cedric Diggory
+
+敌人，Draco Malfoy， Harry Potter、Ron Weasley、Hermione Granger
+
+闺蜜，Hermione Granger，Lavender Brown
+
+父亲，Xenophilius Lovegood，Luna Lovegood
+
+母亲，Pandora Lovegood，Luna Lovegood
+
+兄弟，Fabian Prewett，Molly Weasley、Gideon Prewett
+
+兄弟，Gideon Prewett，Molly Weasley、Fabian Prewett
+
+同事，Kingsley Shacklebolt，Albus Dumbledore、Minister of Magic
+
+合作伙伴，Ron Weasley，Harry Potter、Hermione Granger
+
+恋人，Ginny Weasley，Harry Potter
+
+前任恋人，Cho Chang，Cedric Diggory
+
+敌人，Draco Malfoy， Harry Potter、Ron Weasley、Hermione Granger
+
+闺蜜，Hermione Granger，Lavender Brown
+
+父亲，Xenophilius Lovegood，Luna Lovegood
+
+母亲，Pandora Lovegood，Luna Lovegood
+
+兄弟，Fabian Prewett，Molly Weasley、Gideon Prewett
+
+兄弟，Gideon Prewett，Molly Weasley、Fabian Prewett
+
+同事，Kingsley Shacklebolt，Albus Dumbledore、Minister of Magic
+
+合作伙伴，Ron Weasley，Harry Potter、Hermione Granger
+
+恋人，Ginny Weasley，Harry Potter
+
+前任恋人，Cho Chang，Cedric Diggory
+
+敌人，Draco Malfoy， Harry Potter、Ron Weasley、Hermione Granger
+
+闺蜜，Hermione Granger，Lavender Brown
+
+父亲，Xenophilius Lovegood，Luna Lovegood
+
+母亲，Pandora Lovegood，Luna Lovegood
+
+兄弟，Fabian Prewett，Molly Weasley、Gideon Prewett
+
+兄弟，Gideon Prewett，Molly Weasley、Fabian Prewett
+
+同事，Kingsley Shacklebolt，Albus Dumbledore、Minister of Magic
+
+父子，Arthur Weasley，Ron Weasley、Fred Weasley、George Weasley、Ginny Weasley
+
+母子，Molly Weasley，Ron Weasley、Fred Weasley、George Weasley、Ginny Weasley
+
+父子，James Potter， Harry Potter
+
+母子，Lily Potter， Harry Potter
+
+父女，Xenophilius Lovegood，Luna Lovegood
+
+师徒，Albus Dumbledore， Harry Potter、Ron Weasley、Hermione Granger
+
+师徒，Remus Lupin，Harry Potter、Ron Weasley、Hermione Granger
+
+师徒，Rubeus Hagrid， Harry Potter、Ron Weasley、Hermione Granger
+
+师徒，Severus Snape，Harry Potter、Ron Weasley、Hermione Granger
+
+家庭，Vernon Dursley，Dudley Dursley
+
+家庭，Petunia Dursley，Dudley Dursley
+
+夫妻， Harry Potter，Ginny Weasley
+
+敌人，Lord Voldemort，Harry Potter
+
+敌人，Bellatrix Lestrange， Harry Potter、Ron Weasley、Hermione Granger
+
+敌人，Draco Malfoy，Harry Potter、Ron Weasley、Hermione Granger
