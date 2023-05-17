@@ -1,0 +1,57 @@
+Prompt to ChatGPT（GPT-4 model）
+======================================
+
+请帮我写一段python code满足下面要求：
+- 有个 UI，UI 上从上到下排列4个 80x10的文本框
+-  第一个文本框是输入文本框，下面有两个并排放置的button，分别是Process button和clear button。点击这个clear button，输入文本框里的数据被清空。
+-  第二个文本框叫替换文本框，它下面也有两个并排放置的button，一个是 transform button，另一个是clear button。点击这个clear button，替换文本框里的数据被清空。
+-  第三个文本框叫做改写文本框，它下面有两个并排放置的按钮，分别是Unprocess button和clear button。点击这个clear button，清空改写文本框里面的内容。
+-  第四个文本框里叫做结果文本框，它下面只有clear button，点击这个clear button，结果文本框被清空。
+- 注意所有四个文本框，都要加入颜色设置
+- 写一个Class，将生成这个UI作为其中的一个方法
+- Class 的__init__ 中要从本地的key.info 文件读入一个string，作为api_key 存起来，还用将entitycolor.csv文件中的每一行读入成一个dict，第一列是key，第二列是value，存储到colorconfig dict
+
+-------------------------
+
+继续添加Python代码给Class添加一个process_input 函数，用来处理输入文本框中的输入，它要做的事情有：
+- 调用一个本地 NER 模型提取输入文本中的实体
+- 将这些提取出来的实体对应的字符串按照不同的实体类型显示成不同的颜色
+
+-------------------------
+概念颜色后的字符串不是出现在结果文本框里，而是仍然还在输入文本框里
+
+-------------------------
+请修改process_input 代码，使得一个entity的所有字符作为一个entity被提取出来，而不是按token标注entity type
+
+-------------------------
+修改process_input中代码，在上述功能全部保留的情况下添加新功能：
+- 每一个被找到的实体字符串都用一个随机字符串替换，完整的替换结果被现实在替换文本框里面
+- 每一个被替换的实体本身是什么，被替换成了什么，以及它在输入文本框中被标识的颜色是什么，这三个信息作为一行的内容，存入名为replacements.csv的本地文件
+
+-------------------------
+process_input 有错误，replace_text里面显示的文本应该是输入框中文本的实体被随机替换后的文本，而不应该有反复重复的部分
+
+-------------------------
+请继续修改process_input,把replace_text中显示的文本中原本是entity，后来被替换成其他文字的字符串也用和input_text中实体一样的颜色标识出来
+
+-------------------------
+这次对了，请继续添加一个transform_replaced 函数，这个函数的作用是
+- 将替换文本框里的文本连接在 “Instruction: Rewrite to a lecture notes; Input: " 后面，作为prompt发送给GPT-3 api，调用的gpt-3 的 text-davinci-002 模型，并将收到的response显示在改写框里面。
+- 在改写文本框中显示出来的文本，对应到替换文本框中非黑色的部分，也要用和替换文本框中一样的颜色显示
+
+-------------------------
+做一点修改，openai.api_key是从本地的key.info文件中读取出来的
+
+-------------------------
+transform有bug，替换文本框中有颜色的字符串，显示在改写文本框里时变成了黑色的。要知道replacements.csv文件的第二列里面记录了替换文本框中所有不是黑色的问题，而且第三列是这些文字显示成的颜色。请fix bug
+
+-------------------------
+再添加一个unprocess_transformed函数，它的作用是：
+- 将改写文本框中的文本里面对应replacements.csv第二列的内容替换回replacements.csv第一列的内容，但颜色不变
+- 将替换结果显示在结果文本框中
+
+-------------------------
+unprocess_transformed 有bug，在其中显示的文本，对应replacements.csv 第一列的部分应该是彩色的，颜色就是replacements.csv第三列对应的颜色
+
+-------------------------
+很好，现在修改一下界面部分，每组两个并列在一起的button应该居中放置，不要离得太远，UI的title应该改成“Data Protection”，另外最后一个clear button改成ClearAll，一点击则所有文本框都清空
