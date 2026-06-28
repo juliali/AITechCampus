@@ -1,4 +1,28 @@
 import streamlit as st
+import importlib
+import importlib.util
+import sys
+from pathlib import Path
+
+_APP_DIR = Path(__file__).parent
+
+
+def _ensure_utils():
+    """Register the local utils package for Python 3.14 compatibility."""
+    utils_dir = _APP_DIR / "utils"
+    if "utils" in sys.modules and hasattr(sys.modules["utils"], "__file__"):
+        if sys.modules["utils"].__file__ and str(utils_dir) in sys.modules["utils"].__file__:
+            return
+    spec = importlib.util.spec_from_file_location(
+        "utils", utils_dir / "__init__.py",
+        submodule_search_locations=[str(utils_dir)],
+    )
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["utils"] = mod
+    spec.loader.exec_module(mod)
+
+
+_ensure_utils()
 
 from utils.db import init_db
 from utils.auth import restore_session

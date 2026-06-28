@@ -1,6 +1,0 @@
-[project]
-name = "sfju-utils"
-version = "0.1.0"
-
-[tool.setuptools.packages.find]
-include = ["utils*"]
