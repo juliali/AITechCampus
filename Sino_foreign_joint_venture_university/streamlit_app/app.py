@@ -2,11 +2,7 @@ import streamlit as st
 import sys
 from pathlib import Path
 
-_app_dir = str(Path(__file__).parent)
-if _app_dir not in sys.path:
-    sys.path.insert(0, _app_dir)
-# Ensure our local 'utils' package is found, not a cached one from another lib
-sys.modules.pop("utils", None)
+sys.path.insert(0, str(Path(__file__).parent))
 
 from utils.db import init_db
 from utils.auth import restore_session
