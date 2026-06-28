@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit secrets (local only)
+streamlit_app/.streamlit/secrets.toml
+
+# Auth database
+streamlit_app/data/auth.db
+
+# Debug files
+data/debug_*.txt
+data/test_output.json
+*.log
