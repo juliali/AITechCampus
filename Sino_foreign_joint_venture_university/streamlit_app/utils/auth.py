@@ -11,20 +11,16 @@ _COOKIE_MAX_AGE = 7 * 24 * 3600
 
 
 def _inject_cookie_js(token: str):
-    """Inject JS to set cookie on the main Streamlit page via a hidden iframe."""
-    from streamlit.components.v1 import html as st_html
-    st_html(
-        f'<script>parent.document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>',
-        height=0,
+    """Write session token cookie in the main page context."""
+    st.html(
+        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>'
     )
 
 
 def _inject_delete_cookie_js():
-    """Inject JS to delete cookie."""
-    from streamlit.components.v1 import html as st_html
-    st_html(
-        f'<script>parent.document.cookie="{_COOKIE_NAME}=; path=/; max-age=0; path=/";</script>',
-        height=0,
+    """Delete session cookie."""
+    st.html(
+        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0; path=/";</script>'
     )
 
 
