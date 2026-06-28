@@ -53,6 +53,7 @@ def _set_session_state(user):
     st.session_state.user_id = user["id"]
     st.session_state.is_admin = bool(user["is_admin"])
     st.session_state.ai_access = bool(user["ai_access_approved"])
+    st.session_state.nickname = user["nickname"] or ""
 
 
 def restore_session():
@@ -124,7 +125,7 @@ def logout():
         conn.commit()
         conn.close()
     _inject_delete_cookie_js()
-    for key in ["authenticated", "user_email", "user_id", "is_admin", "ai_access", "_session_token"]:
+    for key in ["authenticated", "user_email", "user_id", "is_admin", "ai_access", "nickname", "_session_token"]:
         st.session_state.pop(key, None)
 
 
@@ -231,6 +232,42 @@ def _show_ai_request_form():
                     conn.close()
                     st.success("申请已提交，请等待管理员审批")
                     st.rerun()
+
+
+# --- Profile functions ---
+
+
+def get_user_profile(user_id: int):
+    conn = get_connection()
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    conn.close()
+    return user
+
+
+def update_nickname(user_id: int, nickname: str):
+    conn = get_connection()
+    conn.execute("UPDATE users SET nickname = ? WHERE id = ?", (nickname.strip(), user_id))
+    conn.commit()
+    conn.close()
+    st.session_state.nickname = nickname.strip()
+
+
+def change_password(user_id: int, old_password: str, new_password: str) -> tuple:
+    conn = get_connection()
+    user = conn.execute("SELECT password_hash FROM users WHERE id = ?", (user_id,)).fetchone()
+    if not user or user["password_hash"] != hash_password(old_password):
+        conn.close()
+        return False, "当前密码错误"
+    if len(new_password) < 6:
+        conn.close()
+        return False, "新密码至少6位"
+    conn.execute(
+        "UPDATE users SET password_hash = ? WHERE id = ?",
+        (hash_password(new_password), user_id),
+    )
+    conn.commit()
+    conn.close()
+    return True, "密码修改成功"
 
 
 # --- Admin functions ---

@@ -21,6 +21,7 @@ def init_db():
             password_hash TEXT NOT NULL,
             is_admin INTEGER DEFAULT 0,
             ai_access_approved INTEGER DEFAULT 0,
+            nickname TEXT,
             created_at TEXT DEFAULT (datetime('now'))
         );
 
@@ -56,6 +57,13 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     """)
+
+    # Migration: add nickname column for existing databases
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN nickname TEXT")
+        conn.commit()
+    except Exception:
+        pass
 
     import hashlib
     salt = "sino_foreign_auth_2024"

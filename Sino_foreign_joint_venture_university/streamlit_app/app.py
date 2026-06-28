@@ -43,12 +43,14 @@ if st.session_state.get("authenticated"):
         st.Page("pages/2_🔍_filter.py", title="项目筛选", icon="🔍"),
         st.Page("pages/3_📋_compare.py", title="项目对比", icon="📋"),
         st.Page("pages/4_💬_ai_consult.py", title="AI咨询", icon="💬"),
+        st.Page("pages/7_👤_profile.py", title="个人设置", icon="👤"),
     ]
     if st.session_state.get("is_admin"):
         pages.append(st.Page("pages/5_🔐_admin.py", title="管理面板", icon="🔐"))
         pages.append(st.Page("pages/6_📈_dashboard.py", title="使用统计", icon="📈"))
 
-    st.sidebar.markdown(f"👤 {st.session_state.get('user_email', '')}")
+    display_name = st.session_state.get("nickname") or st.session_state.get("user_email", "")
+    st.sidebar.markdown(f"👤 {display_name}")
     if st.sidebar.button("退出登录"):
         from utils.auth import logout
         logout()
