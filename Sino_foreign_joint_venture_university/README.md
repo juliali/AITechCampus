@@ -9,7 +9,7 @@
 1. **自动采集** 教育部中外合作办学监管信息平台的全部项目数据
 2. **深度补充** 通过搜索引擎 + AI 提取各项目的学费、录取分数、师资、住宿、海外交换等详细信息
 3. **院校标注** 为中方院校标注 985/211/双一流层级，为外方院校标注 QS 排名和学科特长
-4. **智能咨询** 支持条件筛选和 AI 问答（Claude / 智谱 GLM），根据考生画像推荐最适合的项目
+4. **智能咨询** 支持条件筛选和 AI 流式问答（Claude / 智谱 GLM），根据考生画像推荐最适合的项目
 5. **可视化展示** Streamlit Web App 提供总览仪表盘、项目筛选、多项目对比等功能
 
 ## 数据覆盖
@@ -84,9 +84,10 @@ ZHIPU_API_KEY = "xxx"  # 可选
 
 ### 5. 用户系统
 
-Web App 内置轻量级用户系统（SQLite）：
+Web App 内置轻量级用户系统（SQLite + Cookie 持久化会话）：
 
 - **注册/登录**：任何人可用有效邮箱注册，注册即生效
+- **会话保持**：登录状态通过浏览器 Cookie 持久化，刷新页面不会丢失登录
 - **普通功能**：登录后可访问总览、项目筛选、项目对比
 - **AI 咨询权限**：需要以下任一条件：
   - 管理员审批通过
@@ -95,6 +96,14 @@ Web App 内置轻量级用户系统（SQLite）：
 - **使用统计**：管理员可查看用户活动日志和AI问答详情
 
 > 用户提供的 API Key 仅存储在浏览器会话中，不会持久化到服务器。
+
+### 6. AI 咨询功能
+
+- **流式响应**：AI 回答以流式方式逐字输出，实时反馈
+- **思考提示**：等待 AI 响应期间显示"思考中"动画
+- **停止生成**：支持中途取消 AI 回答
+- **示例问题**：提供一键快捷提问按钮
+- **上下文增强**：自动根据问题检索相关项目数据注入 AI 上下文
 
 ## 项目结构
 
@@ -117,9 +126,23 @@ Sino_foreign_joint_venture_university/
 │   ├── chinese_universities.json   # 中方院校画像库
 │   └── foreign_universities.json   # 外方院校画像库
 ├── streamlit_app/          # Web 应用
-│   ├── app.py              # 首页
-│   ├── pages/              # 子页面（总览/筛选/对比/AI咨询）
+│   ├── app.py              # 主入口（路由 + 会话恢复）
+│   ├── pages/              # 子页面
+│   │   ├── home.py                 # 首页
+│   │   ├── login.py                # 登录/注册
+│   │   ├── 1_📊_overview.py       # 数据总览
+│   │   ├── 2_🔍_filter.py         # 项目筛选
+│   │   ├── 3_📋_compare.py        # 项目对比
+│   │   ├── 4_💬_ai_consult.py     # AI 智能咨询（流式）
+│   │   ├── 5_🔐_admin.py          # 管理面板
+│   │   └── 6_📈_dashboard.py      # 使用统计
 │   └── utils/              # 工具模块
+│       ├── auth.py                 # 认证（Cookie 会话持久化）
+│       ├── db.py                   # SQLite 数据库
+│       ├── data_loader.py          # 数据加载
+│       ├── filters.py              # 筛选逻辑
+│       ├── llm_client.py           # LLM 调用（支持流式）
+│       └── logger.py               # 操作日志
 ├── requirements.txt
 └── .env.example
 ```
@@ -144,9 +167,10 @@ Sino_foreign_joint_venture_university/
 
 - Python 3.10+
 - requests + BeautifulSoup（数据采集）
-- Anthropic Claude SDK（AI 分析与咨询）
+- Anthropic Claude SDK（AI 分析与咨询，支持流式输出）
+- 智谱 GLM / ZhipuAI SDK（可选备用 LLM，支持流式输出）
 - Streamlit + Plotly（Web 可视化）
-- 智谱 GLM（可选备用 LLM）
+- SQLite（用户系统与日志）
 
 ## 注意事项
 
