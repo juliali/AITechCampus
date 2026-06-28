@@ -13,14 +13,16 @@ _COOKIE_MAX_AGE = 7 * 24 * 3600
 def _inject_cookie_js(token: str):
     """Write session token cookie in the main page context."""
     st.html(
-        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>'
+        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>',
+        unsafe_allow_javascript=True,
     )
 
 
 def _inject_delete_cookie_js():
     """Delete session cookie."""
     st.html(
-        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0; path=/";</script>'
+        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0; path=/";</script>',
+        unsafe_allow_javascript=True,
     )
 
 
