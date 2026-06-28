@@ -28,3 +28,4 @@ streamlit_app/data/auth.db
 data/debug_*.txt
 data/test_output.json
 *.log
+*.egg-info/
