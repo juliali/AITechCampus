@@ -1,8 +1,12 @@
 import streamlit as st
+import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+# Change working directory so Python can find local 'utils' package
+os.chdir(Path(__file__).parent)
+if "" not in sys.path:
+    sys.path.insert(0, "")
 
 from utils.db import init_db
 from utils.auth import restore_session

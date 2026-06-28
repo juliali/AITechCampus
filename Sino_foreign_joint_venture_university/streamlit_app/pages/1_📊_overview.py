@@ -1,10 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from utils.data_loader import load_programs, programs_to_df, load_chinese_db, load_foreign_db, DATA_DIR
 
 st.title("📊 中外合作办学总览")

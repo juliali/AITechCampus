@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils.logger import get_user_logs, get_ai_conversations, get_usage_stats
 from utils.db import get_connection

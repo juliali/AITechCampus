@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import load_programs, programs_to_df
 from utils.filters import filter_programs
 
