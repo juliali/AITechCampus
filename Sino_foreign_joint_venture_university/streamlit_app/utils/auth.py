@@ -54,8 +54,9 @@ def _set_session_state(user):
 
 
 def restore_session():
-    """Try to restore session from cookie, query param, or session_state."""
+    """Try to restore session from cookie, or session_state."""
     if st.session_state.get("authenticated"):
+        _ensure_cookie()
         return
     token = _get_cookie_token() or st.session_state.get("_session_token")
     if not token:
@@ -69,6 +70,14 @@ def restore_session():
     if row:
         _set_session_state(row)
         st.session_state["_session_token"] = token
+        _ensure_cookie()
+
+
+def _ensure_cookie():
+    """Inject cookie JS every render to guarantee it gets written."""
+    token = st.session_state.get("_session_token")
+    if token:
+        _inject_cookie_js(token)
 
 
 def register_user(email: str, password: str) -> tuple:
@@ -101,7 +110,6 @@ def login_user(email: str, password: str) -> tuple:
     _set_session_state(user)
     token = _create_session(user["id"])
     st.session_state["_session_token"] = token
-    _inject_cookie_js(token)
     log_action(user["id"], "login")
     return True, "登录成功"
 
