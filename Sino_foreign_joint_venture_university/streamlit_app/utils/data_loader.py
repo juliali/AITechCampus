@@ -13,7 +13,7 @@ _CANDIDATE_DIRS = [
 DATA_DIR = next((d for d in _CANDIDATE_DIRS if (d / "programs.json").exists() or (d / "programs_enriched.json").exists()), _CANDIDATE_DIRS[0])
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_programs():
     """加载项目数据（优先用 enriched）"""
     for name in ["programs_enriched.json", "programs.json"]:
@@ -26,7 +26,7 @@ def load_programs():
     return []
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_chinese_db():
     path = DATA_DIR / "chinese_universities.json"
     if path.exists():
@@ -35,7 +35,7 @@ def load_chinese_db():
     return {}
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_foreign_db():
     path = DATA_DIR / "foreign_universities.json"
     if path.exists():
