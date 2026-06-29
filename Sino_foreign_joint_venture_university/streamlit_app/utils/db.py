@@ -73,7 +73,19 @@ class _TursoResult:
                 self._columns = cols
                 self._rows = []
                 for row in res.get("rows", []):
-                    self._rows.append([cell.get("value") if isinstance(cell, dict) else cell for cell in row])
+                    self._rows.append([self._cast(cell) if isinstance(cell, dict) else cell for cell in row])
+
+    @staticmethod
+    def _cast(cell):
+        t = cell.get("type", "")
+        v = cell.get("value")
+        if v is None or t == "null":
+            return None
+        if t == "integer":
+            return int(v)
+        if t == "float":
+            return float(v)
+        return v
 
     def fetchone(self):
         if self._rows:
