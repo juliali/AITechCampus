@@ -65,7 +65,7 @@ with col3:
 with col4:
     st.subheader("外方院校QS排名分布")
     qs_bins = {"QS 1-50": 0, "QS 51-150": 0, "QS 151-500": 0, "QS 500+": 0, "未上榜/未知": 0}
-    for qs in active_df["QS排名"]:
+    for qs in active_df["外方QS排名"]:
         if pd.isna(qs):
             qs_bins["未上榜/未知"] += 1
         elif qs <= 50:

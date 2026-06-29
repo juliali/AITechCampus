@@ -50,7 +50,7 @@ filtered = filter_programs(df, filters)
 st.markdown(f"**找到 {len(filtered)} 个项目**")
 
 # Display results
-display_cols = ["项目名称", "中方院校", "外方院校", "地区", "层次", "专业", "学费/年", "中方层级", "QS排名", "海外交换"]
+display_cols = ["项目名称", "中方院校", "外方院校", "地区", "层次", "专业", "学费/年", "中方层级", "外方QS排名", "海外交换"]
 st.dataframe(
     filtered[display_cols].reset_index(drop=True),
     use_container_width=True,

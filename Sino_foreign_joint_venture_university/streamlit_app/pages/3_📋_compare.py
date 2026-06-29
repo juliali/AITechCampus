@@ -53,7 +53,7 @@ if len(selected) >= 2:
         cp = prog.get("chinese_university_profile", {}) or {}
         fp = prog.get("foreign_university_profile", {}) or {}
         col_data["中方层级"] = cp.get("tier", "-") if isinstance(cp, dict) else "-"
-        col_data["QS排名"] = str(fp.get("qs_2025_rank", "-")) if isinstance(fp, dict) else "-"
+        col_data["外方QS排名"] = str(fp.get("qs_2025_rank", "-")) if isinstance(fp, dict) else "-"
         col_data["外方国家"] = fp.get("country", "-") if isinstance(fp, dict) else "-"
 
         table_data[short_name] = col_data

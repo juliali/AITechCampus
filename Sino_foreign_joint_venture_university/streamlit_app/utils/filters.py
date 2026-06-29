@@ -18,7 +18,7 @@ def filter_programs(df, filters):
         result = result[result["中方层级"].isin(filters["chinese_tiers"])]
 
     if filters.get("qs_max"):
-        qs_mask = result["QS排名"].notna() & (result["QS排名"] <= filters["qs_max"])
+        qs_mask = result["外方QS排名"].notna() & (result["外方QS排名"] <= filters["qs_max"])
         result = result[qs_mask]
 
     if filters.get("keyword"):

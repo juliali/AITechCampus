@@ -81,7 +81,7 @@ def programs_to_df(programs):
             "学制": p.get("duration", ""),
             "学费/年": p.get("tuition_per_year", ""),
             "中方层级": cp.get("tier", "") if isinstance(cp, dict) else "",
-            "QS排名": qs if isinstance(qs, int) else None,
+            "外方QS排名": qs if isinstance(qs, int) else None,
             "外方国家": fp.get("country", "") if isinstance(fp, dict) else "",
             "海外交换": "是" if p.get("overseas_exchange") else ("否" if p.get("overseas_exchange") is False else ""),
             "状态": p.get("status", ""),
