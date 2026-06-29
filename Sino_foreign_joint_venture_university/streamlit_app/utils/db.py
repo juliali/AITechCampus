@@ -75,8 +75,9 @@ def get_connection():
     if turso_url and turso_token:
         import libsql_client
         if _turso_client is None:
+            url = turso_url.replace("libsql://", "https://")
             _turso_client = libsql_client.create_client_sync(
-                turso_url, auth_token=turso_token
+                url, auth_token=turso_token
             )
         return _TursoConnection(_turso_client)
     else:
