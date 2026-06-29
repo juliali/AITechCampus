@@ -174,17 +174,19 @@ def init_db():
     except Exception:
         pass
 
-    import hashlib
-    salt = "sino_foreign_auth_2024"
-    admin_hash = hashlib.sha256(f"{salt}771220".encode()).hexdigest()
-
-    existing = conn.execute(
-        "SELECT id FROM users WHERE email = ?", ("ye.julia.li@outlook.com",)
-    ).fetchone()
-    if not existing:
-        conn.execute(
-            "INSERT INTO users (email, password_hash, is_admin, ai_access_approved) VALUES (?, ?, 1, 1)",
-            ("ye.julia.li@outlook.com", admin_hash),
-        )
-        conn.commit()
+    admin_email = st.secrets.get("ADMIN_EMAIL")
+    admin_password = st.secrets.get("ADMIN_PASSWORD")
+    if admin_email and admin_password:
+        import hashlib
+        salt = "sino_foreign_auth_2024"
+        admin_hash = hashlib.sha256(f"{salt}{admin_password}".encode()).hexdigest()
+        existing = conn.execute(
+            "SELECT id FROM users WHERE email = ?", (admin_email,)
+        ).fetchone()
+        if not existing:
+            conn.execute(
+                "INSERT INTO users (email, password_hash, is_admin, ai_access_approved) VALUES (?, ?, 1, 1)",
+                (admin_email, admin_hash),
+            )
+            conn.commit()
     conn.close()
