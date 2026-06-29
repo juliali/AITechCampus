@@ -14,23 +14,36 @@ class _TursoConnection:
         self._headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
     def _post(self, sql, params=None):
-        body = {"statements": [{"q": sql}]}
+        stmt = {"sql": sql}
         if params:
             if isinstance(params, (list, tuple)):
-                body["statements"][0]["params"] = list(params)
+                stmt["args"] = [self._typed_arg(v) for v in params]
             elif isinstance(params, dict):
-                body["statements"][0]["params"] = params
+                stmt["named_args"] = [{"name": k, "value": self._typed_arg(v)} for k, v in params.items()]
+        body = {"requests": [{"type": "execute", "stmt": stmt}, {"type": "close"}]}
         resp = requests.post(f"{self._url}/v3/pipeline", json=body, headers=self._headers, timeout=10)
         resp.raise_for_status()
         return resp.json()
+
+    @staticmethod
+    def _typed_arg(value):
+        if value is None:
+            return {"type": "null"}
+        elif isinstance(value, int):
+            return {"type": "integer", "value": str(value)}
+        elif isinstance(value, float):
+            return {"type": "float", "value": str(value)}
+        else:
+            return {"type": "text", "value": str(value)}
 
     def execute(self, sql, params=None):
         result = self._post(sql, params)
         return _TursoResult(result)
 
     def executescript(self, sql):
-        stmts = [{"q": s.strip()} for s in sql.split(";") if s.strip()]
-        body = {"statements": stmts}
+        reqs = [{"type": "execute", "stmt": {"sql": s.strip()}} for s in sql.split(";") if s.strip()]
+        reqs.append({"type": "close"})
+        body = {"requests": reqs}
         resp = requests.post(f"{self._url}/v3/pipeline", json=body, headers=self._headers, timeout=15)
         resp.raise_for_status()
 
