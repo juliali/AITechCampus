@@ -1,37 +1,33 @@
-import datetime
 import hashlib
 import re
 import secrets
 import streamlit as st
-import extra_streamlit_components as stx
+from streamlit.components.v1 import html as st_html
 from utils.db import get_connection, init_db
 from utils.logger import log_action
 
 SALT = "sino_foreign_auth_2024"
 _COOKIE_NAME = "sfju_session_token"
-_COOKIE_MAX_AGE_DAYS = 7
-
-
-@st.cache_resource
-def _get_cookie_manager():
-    return stx.CookieManager(key="sfju_cookie_mgr")
+_COOKIE_MAX_AGE = 7 * 24 * 3600
 
 
 def _set_cookie(token: str):
-    mgr = _get_cookie_manager()
-    expires = datetime.datetime.now() + datetime.timedelta(days=_COOKIE_MAX_AGE_DAYS)
-    mgr.set(_COOKIE_NAME, token, expires_at=expires, key="sfju_set_cookie")
+    st_html(
+        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>',
+        height=0,
+    )
 
 
 def _delete_cookie():
-    mgr = _get_cookie_manager()
-    mgr.delete(_COOKIE_NAME, key="sfju_del_cookie")
+    st_html(
+        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0";</script>',
+        height=0,
+    )
 
 
 def _get_cookie_token() -> str | None:
-    mgr = _get_cookie_manager()
     try:
-        return mgr.get(_COOKIE_NAME)
+        return st.context.cookies.get(_COOKIE_NAME)
     except Exception:
         return None
 
