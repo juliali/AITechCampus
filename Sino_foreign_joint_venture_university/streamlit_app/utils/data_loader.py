@@ -87,4 +87,6 @@ def programs_to_df(programs):
             "状态": p.get("status", ""),
             "detail_url": p.get("detail_url", ""),
         })
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    df = df[df["中方院校"].str.strip().ne("") & df["外方院校"].str.strip().ne("")]
+    return df
