@@ -1,30 +1,38 @@
 import sqlite3
+import requests
 from pathlib import Path
 import streamlit as st
 
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "auth.db"
 
-_turso_client = None
-
 
 class _TursoConnection:
-    """Adapter that wraps libsql_client sync client to behave like sqlite3 connection."""
+    """Connect to Turso via HTTP REST API (no WebSocket, no native libs)."""
 
-    def __init__(self, client):
-        self._client = client
+    def __init__(self, url, token):
+        self._url = url.rstrip("/")
+        self._headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+    def _post(self, sql, params=None):
+        body = {"statements": [{"q": sql}]}
+        if params:
+            if isinstance(params, (list, tuple)):
+                body["statements"][0]["params"] = list(params)
+            elif isinstance(params, dict):
+                body["statements"][0]["params"] = params
+        resp = requests.post(f"{self._url}/v3/pipeline", json=body, headers=self._headers, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
 
     def execute(self, sql, params=None):
-        if params:
-            result = self._client.execute(sql, params)
-        else:
-            result = self._client.execute(sql)
+        result = self._post(sql, params)
         return _TursoResult(result)
 
     def executescript(self, sql):
-        for stmt in sql.split(";"):
-            stmt = stmt.strip()
-            if stmt:
-                self._client.execute(stmt)
+        stmts = [{"q": s.strip()} for s in sql.split(";") if s.strip()]
+        body = {"statements": stmts}
+        resp = requests.post(f"{self._url}/v3/pipeline", json=body, headers=self._headers, timeout=15)
+        resp.raise_for_status()
 
     def commit(self):
         pass
@@ -34,18 +42,33 @@ class _TursoConnection:
 
 
 class _TursoResult:
-    """Adapter for libsql_client result sets to mimic sqlite3 cursor."""
+    """Parse Turso HTTP API response into Row-like objects."""
 
-    def __init__(self, result_set):
-        self._rs = result_set
+    def __init__(self, response):
+        self._rows = []
+        self._columns = []
+        if isinstance(response, list) and response:
+            res = response[0].get("results", {})
+            self._columns = res.get("columns", [])
+            self._rows = res.get("rows", [])
+        elif isinstance(response, dict):
+            results = response.get("results", [])
+            if results:
+                res = results[0].get("response", {}).get("result", {})
+                self._columns = res.get("cols", [])
+                cols = [c.get("name", "") if isinstance(c, dict) else c for c in self._columns]
+                self._columns = cols
+                self._rows = []
+                for row in res.get("rows", []):
+                    self._rows.append([cell.get("value") if isinstance(cell, dict) else cell for cell in row])
 
     def fetchone(self):
-        if self._rs.rows:
-            return _RowDict(self._rs.columns, self._rs.rows[0])
+        if self._rows:
+            return _RowDict(self._columns, self._rows[0])
         return None
 
     def fetchall(self):
-        return [_RowDict(self._rs.columns, row) for row in self._rs.rows]
+        return [_RowDict(self._columns, row) for row in self._rows]
 
 
 class _RowDict:
@@ -68,18 +91,12 @@ class _RowDict:
 
 
 def get_connection():
-    global _turso_client
     turso_url = st.secrets.get("TURSO_DB_URL")
     turso_token = st.secrets.get("TURSO_AUTH_TOKEN")
 
     if turso_url and turso_token:
-        import libsql_client
-        if _turso_client is None:
-            url = turso_url.replace("libsql://", "https://")
-            _turso_client = libsql_client.create_client_sync(
-                url, auth_token=turso_token
-            )
-        return _TursoConnection(_turso_client)
+        url = turso_url.replace("libsql://", "https://")
+        return _TursoConnection(url, turso_token)
     else:
         DB_PATH.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
