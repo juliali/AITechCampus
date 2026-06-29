@@ -7,19 +7,36 @@ from pathlib import Path
 _APP_DIR = Path(__file__).parent
 
 
+def _load_module(name, filepath):
+    """Load a single module file and register it in sys.modules."""
+    spec = importlib.util.spec_from_file_location(name, filepath)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def _ensure_utils():
-    """Register the local utils package for Python 3.14 compatibility."""
+    """Register the local utils package and submodules for Python 3.14."""
     utils_dir = _APP_DIR / "utils"
     if "utils" in sys.modules and hasattr(sys.modules["utils"], "__file__"):
-        if sys.modules["utils"].__file__ and str(utils_dir) in sys.modules["utils"].__file__:
+        if sys.modules["utils"].__file__ and str(utils_dir) in str(sys.modules["utils"].__file__):
             return
+
     spec = importlib.util.spec_from_file_location(
         "utils", utils_dir / "__init__.py",
         submodule_search_locations=[str(utils_dir)],
     )
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["utils"] = mod
-    spec.loader.exec_module(mod)
+    pkg = importlib.util.module_from_spec(spec)
+    sys.modules["utils"] = pkg
+    spec.loader.exec_module(pkg)
+
+    for py_file in utils_dir.glob("*.py"):
+        if py_file.name == "__init__.py":
+            continue
+        submod_name = f"utils.{py_file.stem}"
+        if submod_name not in sys.modules:
+            _load_module(submod_name, py_file)
 
 
 _ensure_utils()
