@@ -1,35 +1,37 @@
+import datetime
 import hashlib
 import re
 import secrets
 import streamlit as st
+import extra_streamlit_components as stx
 from utils.db import get_connection, init_db
 from utils.logger import log_action
 
 SALT = "sino_foreign_auth_2024"
 _COOKIE_NAME = "sfju_session_token"
-_COOKIE_MAX_AGE = 7 * 24 * 3600
+_COOKIE_MAX_AGE_DAYS = 7
 
 
-def _inject_cookie_js(token: str):
-    """Write session token cookie in the main page context."""
-    st.html(
-        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>',
-        unsafe_allow_javascript=True,
-    )
+@st.cache_resource
+def _get_cookie_manager():
+    return stx.CookieManager(key="sfju_cookie_mgr")
 
 
-def _inject_delete_cookie_js():
-    """Delete session cookie."""
-    st.html(
-        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0; path=/";</script>',
-        unsafe_allow_javascript=True,
-    )
+def _set_cookie(token: str):
+    mgr = _get_cookie_manager()
+    expires = datetime.datetime.now() + datetime.timedelta(days=_COOKIE_MAX_AGE_DAYS)
+    mgr.set(_COOKIE_NAME, token, expires_at=expires, key="sfju_set_cookie")
+
+
+def _delete_cookie():
+    mgr = _get_cookie_manager()
+    mgr.delete(_COOKIE_NAME, key="sfju_del_cookie")
 
 
 def _get_cookie_token() -> str | None:
-    """Read session token from browser cookie."""
+    mgr = _get_cookie_manager()
     try:
-        return st.context.cookies.get(_COOKIE_NAME)
+        return mgr.get(_COOKIE_NAME)
     except Exception:
         return None
 
@@ -59,7 +61,6 @@ def _set_session_state(user):
 def restore_session():
     """Try to restore session from cookie, or session_state."""
     if st.session_state.get("authenticated"):
-        _ensure_cookie()
         return
     token = _get_cookie_token() or st.session_state.get("_session_token")
     if not token:
@@ -73,14 +74,6 @@ def restore_session():
     if row:
         _set_session_state(row)
         st.session_state["_session_token"] = token
-        _ensure_cookie()
-
-
-def _ensure_cookie():
-    """Inject cookie JS every render to guarantee it gets written."""
-    token = st.session_state.get("_session_token")
-    if token:
-        _inject_cookie_js(token)
 
 
 def register_user(email: str, password: str) -> tuple:
@@ -113,6 +106,7 @@ def login_user(email: str, password: str) -> tuple:
     _set_session_state(user)
     token = _create_session(user["id"])
     st.session_state["_session_token"] = token
+    _set_cookie(token)
     log_action(user["id"], "login")
     return True, "登录成功"
 
@@ -124,7 +118,7 @@ def logout():
         conn.execute("DELETE FROM sessions WHERE token = ?", (token,))
         conn.commit()
         conn.close()
-    _inject_delete_cookie_js()
+    _delete_cookie()
     for key in ["authenticated", "user_email", "user_id", "is_admin", "ai_access", "nickname", "_session_token"]:
         st.session_state.pop(key, None)
 
