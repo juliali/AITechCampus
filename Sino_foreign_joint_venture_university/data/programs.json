@@ -413,7 +413,9 @@
     "major": "工商管理",
     "approval_authority": "教育部",
     "approval_number": "MOE11HK1A20030460O",
-    "approval_expiry": "2024年12月31日"
+    "approval_expiry": "2024年12月31日",
+    "chinese_partner": "清华大学",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "中国人民大学与香港理工大学合作举办管理学博士学位教育项目",
@@ -433,7 +435,9 @@
     "major": "管理学",
     "approval_authority": "教育部",
     "approval_number": "MOE11HK1A20030470O",
-    "approval_expiry": "2029年12月31日"
+    "approval_expiry": "2029年12月31日",
+    "chinese_partner": "中国人民大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "北京航空航天大学中法工程师学院 （Beihang Sino-French Engineer School ）",
@@ -2675,7 +2679,9 @@
     "major": "智能会计与金融科技应用",
     "approval_authority": "教育部",
     "approval_number": "MOE11HK1N20192018N",
-    "approval_expiry": "2030年12月31日"
+    "approval_expiry": "2030年12月31日",
+    "chinese_partner": "北京国家会计学院",
+    "foreign_partner": "香港城市大学"
   },
   {
     "name": "中央财经大学与香港理工大学合作举办数智金融博士学位教育项目",
@@ -2695,7 +2701,9 @@
     "major": "数智金融",
     "approval_authority": "教育部",
     "approval_number": "MOE11HK1A20262765N",
-    "approval_expiry": "2032年12月31日"
+    "approval_expiry": "2032年12月31日",
+    "chinese_partner": "中央财经大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "北京科技大学中日经济技术学院",
@@ -4699,7 +4707,9 @@
     "major": "工商管理",
     "approval_authority": "国务院学位办",
     "approval_number": "MOE31HK1A19980623O",
-    "approval_expiry": "2033年12月31日"
+    "approval_expiry": "2033年12月31日",
+    "chinese_partner": "复旦大学",
+    "foreign_partner": "香港大学"
   },
   {
     "name": "同济大学中德工程学院（Sino-German College Applied Sciences of Tongji University）",
@@ -6029,7 +6039,9 @@
     "major": "高级财会人员专业会计学",
     "approval_authority": "教育部",
     "approval_number": "MOE31HK1A20131448N",
-    "approval_expiry": "2029年12月31日"
+    "approval_expiry": "2029年12月31日",
+    "chinese_partner": "上海国家会计学院",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "上海第二工业大学昆士兰学院",
@@ -7422,7 +7434,9 @@
     "major": "连锁经营管理专业(专业代码：620504H)",
     "approval_authority": "上海市教育委员会",
     "approval_number": "PDE31TW3A20120624N",
-    "approval_expiry": "2018年12月31日"
+    "approval_expiry": "2018年12月31日",
+    "chinese_partner": "上海立达学院",
+    "foreign_partner": "台湾醒吾科技大学"
   },
   {
     "name": "上海工商职业技术学院与台湾观光学院合作举办旅游管理（餐饮方向）专业高等专科教育项目",
@@ -7441,7 +7455,9 @@
     "major": "旅游管理（专业代码：640101H）",
     "approval_authority": "上海市教育委员会",
     "approval_number": "PDE31TW3A20130732N",
-    "approval_expiry": "2019年9月30日"
+    "approval_expiry": "2019年9月30日",
+    "chinese_partner": "上海工商职业技术学院",
+    "foreign_partner": "台湾观光学院"
   },
   {
     "name": "上海立达职业技术学院与台湾长庚科技大学合作举办护理专业高等专科学历教育项目",
@@ -7460,7 +7476,9 @@
     "major": "护理专业（专业代码：630201H）",
     "approval_authority": "上海市教育委员会",
     "approval_number": "PDE31TW3A20150861N",
-    "approval_expiry": "2022年12月31日"
+    "approval_expiry": "2022年12月31日",
+    "chinese_partner": "上海立达职业技术学院",
+    "foreign_partner": "台湾长庚科技大学"
   },
   {
     "name": "山西财经大学中德学院（Sino-Germen School of Shanxi University of Finance and Economics）",
@@ -14927,7 +14945,9 @@
     "major": "宠物养护与疫病防治（专业代码：510320H）",
     "approval_authority": "山东省教育厅",
     "approval_number": "PDE37TW3A20150870N",
-    "approval_expiry": "2021年12月31日"
+    "approval_expiry": "2021年12月31日",
+    "chinese_partner": "山东畜牧兽医职业学院",
+    "foreign_partner": "台湾大仁科技大学"
   },
   {
     "name": "威海职业学院与台湾东南科技大学合作举办建筑装饰工程技术专业高等专科教育项目",
@@ -14946,7 +14966,9 @@
     "major": "建筑装饰工程技术（专业代码：540102H）",
     "approval_authority": "山东省教育厅",
     "approval_number": "PDE37TW3A20191036N",
-    "approval_expiry": "2024年12月31日"
+    "approval_expiry": "2024年12月31日",
+    "chinese_partner": "威海职业学院",
+    "foreign_partner": "台湾东南科技大学"
   },
   {
     "name": "山东科技职业学院与台湾环球科技大学合作举办数字媒体艺术设计专业专科教育项目",
@@ -14965,7 +14987,9 @@
     "major": "数字媒体艺术设计专业（专业代码：650104H）",
     "approval_authority": "山东省教育厅",
     "approval_number": "PDE37TW3A20191069N",
-    "approval_expiry": "2025年12月31日"
+    "approval_expiry": "2025年12月31日",
+    "chinese_partner": "山东科技职业学院",
+    "foreign_partner": "台湾环球科技大学"
   },
   {
     "name": "潍坊职业学院与台湾大仁科技大学合作举办药品生物技术专业高等专科教育项目",
@@ -14984,7 +15008,9 @@
     "major": "药品生物技术（专业代码：570103H）",
     "approval_authority": "山东省教育厅",
     "approval_number": "PDE37TW3A20191070N",
-    "approval_expiry": "2025年12月31日"
+    "approval_expiry": "2025年12月31日",
+    "chinese_partner": "潍坊职业学院",
+    "foreign_partner": "台湾大仁科技大学"
   },
   {
     "name": "江西财经大学与美国纽约理工学院合作举办工商管理硕士学位教育项目",
@@ -28971,7 +28997,9 @@
     "major": "农业机械应用技术（专业代码：510117H）",
     "approval_authority": "江苏省教育厅",
     "approval_number": "PDE32TW3A20150845N",
-    "approval_expiry": "2022年12月31日"
+    "approval_expiry": "2022年12月31日",
+    "chinese_partner": "江苏农林职业技术学院",
+    "foreign_partner": "台湾建国科技大学"
   },
   {
     "name": "浙江工业大学与英国利兹贝克特大学合作举办国际贸易与金融硕士学位教育项目",
@@ -29153,7 +29181,9 @@
     "major": "品质管理",
     "approval_authority": "国务院学位办",
     "approval_number": "MOE33HK1A19990116O",
-    "approval_expiry": "2031年12月31日"
+    "approval_expiry": "2031年12月31日",
+    "chinese_partner": "浙江大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "浙江大学与香港理工大学合作举办酒店及旅游业管理硕士学位教育项目",
@@ -29173,7 +29203,9 @@
     "major": "酒店与旅游业管理",
     "approval_authority": "国务院学位办",
     "approval_number": "MOE33HK1A20000117O",
-    "approval_expiry": "2031年12月31日"
+    "approval_expiry": "2031年12月31日",
+    "chinese_partner": "浙江大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "浙江大学与香港理工大学合作举办国际房地产硕士学位教育项目",
@@ -29193,7 +29225,9 @@
     "major": "国际房地产",
     "approval_authority": "国务院学位办",
     "approval_number": "MOE33HK1A20010119O",
-    "approval_expiry": "2025年12月31日"
+    "approval_expiry": "2025年12月31日",
+    "chinese_partner": "浙江大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "宁波诺丁汉大学（The University of Nottingham－Ningbo）",
@@ -31650,7 +31684,9 @@
     "major": "电子信息工程（专业代码：080603H）",
     "approval_authority": "教育部",
     "approval_number": "MOE33TW2A20121294N",
-    "approval_expiry": "2025年12月31日"
+    "approval_expiry": "2025年12月31日",
+    "chinese_partner": "温州大学",
+    "foreign_partner": "台湾中华大学"
   },
   {
     "name": "浙江大学与香港理工大学合作举办酒店及旅游管理博士学位教育项目",
@@ -31670,7 +31706,9 @@
     "major": "酒店及旅游管理",
     "approval_authority": "教育部",
     "approval_number": "MOE33HK1A20121287N",
-    "approval_expiry": "2032年12月31日"
+    "approval_expiry": "2032年12月31日",
+    "chinese_partner": "浙江大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "浙江大学与香港理工大学合作举办国际航运与港口专业博士学位教育项目",
@@ -31690,7 +31728,9 @@
     "major": "国际航运与港口",
     "approval_authority": "教育部",
     "approval_number": "MOE33HK1A20252620N",
-    "approval_expiry": "2032年12月31日"
+    "approval_expiry": "2032年12月31日",
+    "chinese_partner": "浙江大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "浙江越秀外国语学院印第安纳波利斯大学国际学院",
@@ -34545,7 +34585,9 @@
     "major": "机电一体化技术（专业代码：580201H）",
     "approval_authority": "浙江省教育厅",
     "approval_number": "PDE33TW3A20140761N",
-    "approval_expiry": "2020年12月31日"
+    "approval_expiry": "2020年12月31日",
+    "chinese_partner": "浙江工贸职业技术学院",
+    "foreign_partner": "台湾大华科技大学"
   },
   {
     "name": "浙江工贸职业技术学院与台湾中华大学合作举办电子信息工程技术专业高等专科教育项目",
@@ -34564,7 +34606,9 @@
     "major": "电子信息工程技术（专业代码：590201H）",
     "approval_authority": "浙江省教育厅",
     "approval_number": "PDE33TW3A20140762N",
-    "approval_expiry": "2020年12月31日"
+    "approval_expiry": "2020年12月31日",
+    "chinese_partner": "浙江工贸职业技术学院",
+    "foreign_partner": "台湾中华大学"
   },
   {
     "name": "杭州科技职业技术学院与台湾东南科技大学合作举办建筑设备工程技术专业高等专科教育项目",
@@ -34583,7 +34627,9 @@
     "major": "建筑设备工程技术（专业代码：540401H）",
     "approval_authority": "浙江省教育厅",
     "approval_number": "PDE33TW3A20140804N",
-    "approval_expiry": "2023年12月31日"
+    "approval_expiry": "2023年12月31日",
+    "chinese_partner": "杭州科技职业技术学院",
+    "foreign_partner": "台湾东南科技大学"
   },
   {
     "name": "浙江工贸职业技术学院与台湾中原大学合作举办光电制造与应用技术专业高等专科教育项目",
@@ -34602,7 +34648,9 @@
     "major": "光电制造与应用技术 (专业代码：630501H)",
     "approval_authority": "浙江省教育厅",
     "approval_number": "PDE33TW3A20160922N",
-    "approval_expiry": "2022年12月31日"
+    "approval_expiry": "2022年12月31日",
+    "chinese_partner": "浙江工贸职业技术学院",
+    "foreign_partner": "台湾中原大学"
   },
   {
     "name": "中山大学与美国明尼苏达大学合作举办高级管理人员工商管理硕士学位教育项目",
@@ -34713,7 +34761,9 @@
     "major": "工商管理",
     "approval_authority": "教育部",
     "approval_number": "MOE44HK1A20000908O",
-    "approval_expiry": "2024年12月31日"
+    "approval_expiry": "2024年12月31日",
+    "chinese_partner": "清华大学",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "中山大学中法核工程与技术学院（Sino-French Institute of Nuclear Engineering & Technology, Sun Yat-sen University）",
@@ -36160,7 +36210,9 @@
     "major": "翻译（专业代码：050261H）",
     "approval_authority": "教育部",
     "approval_number": "MOE44MO2A20222263N",
-    "approval_expiry": "2030年12月31日"
+    "approval_expiry": "2030年12月31日",
+    "chinese_partner": "广东外语外贸大学",
+    "foreign_partner": "澳门理工大学"
   },
   {
     "name": "南方科技大学与香港中文大学合作举办科技与创新工商管理专业硕士学位教育项目",
@@ -36180,7 +36232,9 @@
     "major": "科技与创新工商管理",
     "approval_authority": "教育部",
     "approval_number": "MOE44HK1A20262793N",
-    "approval_expiry": "2032年12月31日"
+    "approval_expiry": "2032年12月31日",
+    "chinese_partner": "南方科技大学",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "广东水利电力职业技术学院杰克逊国际学院（Jackson International Institute of Guangdong Technical College of Water Resources and Electric Engineering）",
@@ -37960,7 +38014,9 @@
     "major": "酒店管理与数字化运营（专业代码：540106H）",
     "approval_authority": "广东省教育厅",
     "approval_number": "PDE44HK3A20170954N",
-    "approval_expiry": "2027年12月31日"
+    "approval_expiry": "2027年12月31日",
+    "chinese_partner": "广州涉外经济职业技术学院",
+    "foreign_partner": "香港都会大学"
   },
   {
     "name": "广州涉外经济职业技术学院与东华学院合作举办护理专业高等专科教育项目",
@@ -37979,7 +38035,9 @@
     "major": "护理（专业代码：520201H）",
     "approval_authority": "广东省教育厅",
     "approval_number": "PDE44HK3A20251480N",
-    "approval_expiry": "2030年12月31日"
+    "approval_expiry": "2030年12月31日",
+    "chinese_partner": "广州涉外经济职业技术学院",
+    "foreign_partner": "东华学院"
   },
   {
     "name": "福建农林大学与加拿大戴尔豪西大学合作举办农业资源与环境专业本科教育项目",
@@ -39195,7 +39253,9 @@
     "major": "电子信息工程（专业代码：080701H）",
     "approval_authority": "教育部",
     "approval_number": "MOE35TW2A20151732N",
-    "approval_expiry": "2025年12月31日"
+    "approval_expiry": "2025年12月31日",
+    "chinese_partner": "三明学院",
+    "foreign_partner": "台湾大叶大学"
   },
   {
     "name": "福州大学与台湾元智大学合作举办电气工程专业博士研究生教育项目",
@@ -39215,7 +39275,9 @@
     "major": "电气工程（0806H）",
     "approval_authority": "教育部",
     "approval_number": "MOE34TW1A20161791N",
-    "approval_expiry": "2030年12月31日"
+    "approval_expiry": "2030年12月31日",
+    "chinese_partner": "福州大学",
+    "foreign_partner": "台湾元智大学"
   },
   {
     "name": "厦门国家会计学院与香港理工大学合作举办大数据会计与金融专业硕士学位教育项目",
@@ -39235,7 +39297,9 @@
     "major": "大数据会计与金融",
     "approval_authority": "教育部",
     "approval_number": "MOE35HK1A20252520N",
-    "approval_expiry": "2031年12月31日"
+    "approval_expiry": "2031年12月31日",
+    "chinese_partner": "厦门国家会计学院",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "闽江学院爱恩国际学院（已注销）",
@@ -44932,7 +44996,9 @@
     "major": "护理",
     "approval_authority": "教育部",
     "approval_number": "MOE43MO1A20212201N",
-    "approval_expiry": "2032年12月31日"
+    "approval_expiry": "2032年12月31日",
+    "chinese_partner": "湖南师范大学",
+    "foreign_partner": "澳门镜湖护理学院"
   },
   {
     "name": "湖南信息科学职业学院与英国桑德兰城市学院合作举办电子商务专业高等专科教育项目",
@@ -50517,7 +50583,9 @@
     "major": "灾害护理",
     "approval_authority": "教育部",
     "approval_number": "MOE51HK1A20121283N",
-    "approval_expiry": "2024年12月31日"
+    "approval_expiry": "2024年12月31日",
+    "chinese_partner": "四川大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "西南财经大学与岭南大学合作举办国际贸易学专业硕士研究生教育项目",
@@ -50537,7 +50605,9 @@
     "major": "国际贸易学",
     "approval_authority": "教育部",
     "approval_number": "MOE51HK1A20252455N",
-    "approval_expiry": "2030年12月31日"
+    "approval_expiry": "2030年12月31日",
+    "chinese_partner": "西南财经大学",
+    "foreign_partner": "岭南大学"
   },
   {
     "name": "加蓉高等技术培训中心",

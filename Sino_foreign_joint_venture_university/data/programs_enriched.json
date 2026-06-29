@@ -706,7 +706,9 @@
       "https://www.admissions.tsinghua.edu.cn/info/1016/2138.htm",
       "https://admission.cuhk.edu.hk/sc/programme/ecotu/",
       "https://www.join-tsinghua.edu.cn/info/1016/1816.htm"
-    ]
+    ],
+    "chinese_partner": "清华大学",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "中国人民大学与香港理工大学合作举办管理学博士学位教育项目",
@@ -771,7 +773,9 @@
       "https://grs.ruc.edu.cn/info/1017/3297.htm",
       "https://www.crs.jsj.edu.cn/aproval/detail/491",
       "https://zhuanlan.zhihu.com/p/8706433257"
-    ]
+    ],
+    "chinese_partner": "中国人民大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "北京航空航天大学中法工程师学院 （Beihang Sino-French Engineer School ）",
@@ -3072,7 +3076,9 @@
       "https://mse.cufe.edu.cn/info/1102/1682.htm",
       "http://int.cufe.edu.cn/",
       "https://www.polyu.edu.hk/geo/exchange-and-study-abroad/incoming-students/incoming-exchange/?sc_lang=sc"
-    ]
+    ],
+    "chinese_partner": "中央财经大学",
+    "foreign_partner": "香港理工大学"
   },
   {
     "name": "长江商学院",
@@ -9307,7 +9313,9 @@
       "https://www.nai.edu.cn/index.php?m=content&c=index&a=show&catid=364&id=380",
       "https://zhuanlan.zhihu.com/p/30189315442",
       "https://zhuanlan.zhihu.com/p/629704943"
-    ]
+    ],
+    "chinese_partner": "北京国家会计学院",
+    "foreign_partner": "香港城市大学"
   },
   {
     "name": "北京科技大学中日经济技术学院",
@@ -13112,7 +13120,9 @@
       "https://fao.fudan.edu.cn/1599/list.htm",
       "https://zhuanlan.zhihu.com/p/682710462",
       "https://zhuanlan.zhihu.com/p/1942676919817601306"
-    ]
+    ],
+    "chinese_partner": "复旦大学",
+    "foreign_partner": "香港大学"
   },
   {
     "name": "同济大学中德工程学院（Sino-German College Applied Sciences of Tongji University）",
@@ -19227,7 +19237,9 @@
     "approval_number": "MOE31HK1A20131448N",
     "approval_expiry": "2029年12月31日",
     "enriched_at": "2026-06-27T17:22:34.764044",
-    "enrichment_confidence": "failed"
+    "enrichment_confidence": "failed",
+    "chinese_partner": "上海国家会计学院",
+    "foreign_partner": "香港中文大学"
   },
   {
     "name": "上海第二工业大学昆士兰学院",
@@ -29076,7 +29088,9 @@
     "approval_number": "PDE31TW3A20120624N",
     "approval_expiry": "2018年12月31日",
     "enriched_at": "2026-06-28T10:38:24.254927",
-    "enrichment_confidence": "failed"
+    "enrichment_confidence": "failed",
+    "chinese_partner": "上海立达学院",
+    "foreign_partner": "台湾醒吾科技大学"
   },
   {
     "name": "上海工商职业技术学院与台湾观光学院合作举办旅游管理（餐饮方向）专业高等专科教育项目",
@@ -29097,7 +29111,9 @@
     "approval_number": "PDE31TW3A20130732N",
     "approval_expiry": "2019年9月30日",
     "enriched_at": "2026-06-28T10:39:16.676436",
-    "enrichment_confidence": "failed"
+    "enrichment_confidence": "failed",
+    "chinese_partner": "上海工商职业技术学院",
+    "foreign_partner": "台湾观光学院"
   },
   {
     "name": "上海立达职业技术学院与台湾长庚科技大学合作举办护理专业高等专科学历教育项目",
@@ -29118,7 +29134,9 @@
     "approval_number": "PDE31TW3A20150861N",
     "approval_expiry": "2022年12月31日",
     "enriched_at": "2026-06-28T10:39:52.269811",
-    "enrichment_confidence": "failed"
+    "enrichment_confidence": "failed",
+    "chinese_partner": "上海立达职业技术学院",
+    "foreign_partner": "台湾长庚科技大学"
   },
   {
     "name": "鲁东大学与意大利那不勒斯帕萨诺普大学合作举办社会体育指导与管理专业本科教育项目",
