@@ -1,45 +1,35 @@
 import streamlit as st
 import importlib
+import importlib.abc
+import importlib.machinery
 import importlib.util
 import sys
 from pathlib import Path
 
 _APP_DIR = Path(__file__).parent
+_UTILS_DIR = _APP_DIR / "utils"
 
 
-def _load_module(name, filepath):
-    """Load a single module file and register it in sys.modules."""
-    spec = importlib.util.spec_from_file_location(name, filepath)
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
+class _LocalPackageFinder(importlib.abc.MetaPathFinder):
+    """A custom finder that resolves 'utils' and 'utils.*' from the app directory."""
+
+    def find_spec(self, fullname, path, target=None):
+        if fullname == "utils":
+            return importlib.util.spec_from_file_location(
+                "utils",
+                _UTILS_DIR / "__init__.py",
+                submodule_search_locations=[str(_UTILS_DIR)],
+            )
+        if fullname.startswith("utils."):
+            submod = fullname.split(".", 1)[1]
+            filepath = _UTILS_DIR / f"{submod}.py"
+            if filepath.exists():
+                return importlib.util.spec_from_file_location(fullname, filepath)
+        return None
 
 
-def _ensure_utils():
-    """Register the local utils package and submodules for Python 3.14."""
-    utils_dir = _APP_DIR / "utils"
-    if "utils" in sys.modules and hasattr(sys.modules["utils"], "__file__"):
-        if sys.modules["utils"].__file__ and str(utils_dir) in str(sys.modules["utils"].__file__):
-            return
-
-    spec = importlib.util.spec_from_file_location(
-        "utils", utils_dir / "__init__.py",
-        submodule_search_locations=[str(utils_dir)],
-    )
-    pkg = importlib.util.module_from_spec(spec)
-    sys.modules["utils"] = pkg
-    spec.loader.exec_module(pkg)
-
-    for py_file in utils_dir.glob("*.py"):
-        if py_file.name == "__init__.py":
-            continue
-        submod_name = f"utils.{py_file.stem}"
-        if submod_name not in sys.modules:
-            _load_module(submod_name, py_file)
-
-
-_ensure_utils()
+if not any(isinstance(f, _LocalPackageFinder) for f in sys.meta_path):
+    sys.meta_path.insert(0, _LocalPackageFinder())
 
 from utils.db import init_db
 from utils.auth import restore_session
