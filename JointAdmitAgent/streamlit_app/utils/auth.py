@@ -2,7 +2,6 @@ import hashlib
 import re
 import secrets
 import streamlit as st
-from streamlit.components.v1 import html as st_html
 from utils.db import get_connection, init_db
 from utils.logger import log_action
 
@@ -12,17 +11,13 @@ _COOKIE_MAX_AGE = 7 * 24 * 3600
 
 
 def _set_cookie(token: str):
-    st_html(
-        f'<script>document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>',
-        height=0,
-    )
+    js = f'<script>parent.document.cookie="{_COOKIE_NAME}={token}; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Lax";</script>'
+    st.components.v1.html(js, height=0)
 
 
 def _delete_cookie():
-    st_html(
-        f'<script>document.cookie="{_COOKIE_NAME}=; path=/; max-age=0";</script>',
-        height=0,
-    )
+    js = f'<script>parent.document.cookie="{_COOKIE_NAME}=; path=/; max-age=0";</script>'
+    st.components.v1.html(js, height=0)
 
 
 def _get_cookie_token() -> str | None:
