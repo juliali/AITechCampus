@@ -1,35 +1,10 @@
 import streamlit as st
-import importlib
-import importlib.abc
-import importlib.machinery
-import importlib.util
 import sys
 from pathlib import Path
 
 _APP_DIR = Path(__file__).parent
-_UTILS_DIR = _APP_DIR / "utils"
-
-
-class _LocalPackageFinder(importlib.abc.MetaPathFinder):
-    """A custom finder that resolves 'utils' and 'utils.*' from the app directory."""
-
-    def find_spec(self, fullname, path, target=None):
-        if fullname == "utils":
-            return importlib.util.spec_from_file_location(
-                "utils",
-                _UTILS_DIR / "__init__.py",
-                submodule_search_locations=[str(_UTILS_DIR)],
-            )
-        if fullname.startswith("utils."):
-            submod = fullname.split(".", 1)[1]
-            filepath = _UTILS_DIR / f"{submod}.py"
-            if filepath.exists():
-                return importlib.util.spec_from_file_location(fullname, filepath)
-        return None
-
-
-if not any(isinstance(f, _LocalPackageFinder) for f in sys.meta_path):
-    sys.meta_path.insert(0, _LocalPackageFinder())
+if str(_APP_DIR) not in sys.path:
+    sys.path.insert(0, str(_APP_DIR))
 
 from utils.db import init_db
 from utils.auth import restore_session
