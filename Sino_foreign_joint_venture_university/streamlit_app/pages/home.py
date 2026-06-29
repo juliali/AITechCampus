@@ -6,8 +6,8 @@ from utils.data_loader import load_programs, programs_to_df
 programs = load_programs()
 df = programs_to_df(programs)
 
-st.title("🎓 中外合作办学智能指南")
-st.markdown("帮助考生和家长全面了解中外合作办学项目，做出明智选择")
+st.title("🎓 中外合办选校智能体")
+st.caption("JointAdmit Agent — 智能中外合作办学志愿填报助手")
 
 st.divider()
 

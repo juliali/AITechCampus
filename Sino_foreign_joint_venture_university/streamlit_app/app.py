@@ -28,7 +28,7 @@ from utils.db import init_db
 from utils.auth import restore_session
 
 st.set_page_config(
-    page_title="中外合作办学指南",
+    page_title="中外合办选校智能体 | JointAdmit Agent",
     page_icon="🎓",
     layout="wide",
 )

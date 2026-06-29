@@ -130,7 +130,7 @@ def logout():
 
 
 def show_auth_form():
-    st.title("🎓 中外合作办学智能指南")
+    st.title("🎓 中外合办选校智能体")
     st.markdown("请登录或注册后使用本系统")
     tab_login, tab_register = st.tabs(["登录", "注册"])
 
