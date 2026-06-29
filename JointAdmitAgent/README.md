@@ -15,7 +15,7 @@
 ## 数据覆盖
 
 当前已采集：
-- 849 个项目（北京、上海、江苏、浙江、广东、福建）
+- 2543 个项目（全国所有省份）
 - 326 所中方院校画像
 - 632 所外方院校画像（含 QS 排名）
 
@@ -24,7 +24,7 @@
 ### 1. 环境准备
 
 ```bash
-cd Sino_foreign_joint_venture_university
+cd JointAdmitAgent
 python -m venv .venv
 # Windows
 .venv\Scripts\activate
@@ -80,35 +80,56 @@ streamlit run app.py
 ```toml
 ANTHROPIC_API_KEY = "sk-ant-xxx"
 ZHIPU_API_KEY = "xxx"  # 可选
+
+# Turso 云数据库（Streamlit Cloud 部署时使用）
+TURSO_DB_URL = "libsql://your-db.turso.io"
+TURSO_AUTH_TOKEN = "your-token"
+
+# 管理员账号
+ADMIN_EMAIL = "admin@example.com"
+ADMIN_PASSWORD = "your-password"
 ```
 
-### 5. 用户系统
+### 5. Streamlit Cloud 部署
 
-Web App 内置轻量级用户系统（SQLite + Cookie 持久化会话）：
+本项目已支持 Streamlit Cloud 部署：
+
+- **Repository**: `juliali/AITechCampus`
+- **Branch**: `master`
+- **Main file path**: `JointAdmitAgent/streamlit_app/app.py`
+
+部署后需在 Streamlit Cloud 的 **Settings → Secrets** 中配置上述 secrets.toml 内容。
+
+数据库在本地使用 SQLite，在 Cloud 上自动切换为 Turso（基于 HTTP REST API，无需额外 native 依赖）。
+
+### 6. 用户系统
+
+Web App 内置轻量级用户系统：
 
 - **注册/登录**：任何人可用有效邮箱注册，注册即生效
 - **会话保持**：登录状态通过浏览器 Cookie 持久化，刷新页面不会丢失登录
-- **普通功能**：登录后可访问总览、项目筛选、项目对比
+- **普通功能**：登录后可访问总览、项目筛选、项目对比、个人设置
 - **AI 咨询权限**：需要以下任一条件：
   - 管理员审批通过
   - 用户自行提供智谱 GLM API Key（访问 [bigmodel.cn](https://bigmodel.cn) 注册获取）
-- **管理员面板**：审批用户请求、管理用户、选择AI模型后端
-- **使用统计**：管理员可查看用户活动日志和AI问答详情
+- **管理员面板**：审批用户请求、管理用户、选择 AI 模型后端
+- **使用统计**：管理员可查看用户活动日志和 AI 问答详情
 
 > 用户提供的 API Key 仅存储在浏览器会话中，不会持久化到服务器。
 
-### 6. AI 咨询功能
+### 7. AI 咨询功能
 
 - **流式响应**：AI 回答以流式方式逐字输出，实时反馈
 - **思考提示**：等待 AI 响应期间显示"思考中"动画
 - **停止生成**：支持中途取消 AI 回答
 - **示例问题**：提供一键快捷提问按钮
 - **上下文增强**：自动根据问题检索相关项目数据注入 AI 上下文
+- **多后端支持**：管理员可在 Claude 和智谱 GLM 之间切换
 
 ## 项目结构
 
 ```
-Sino_foreign_joint_venture_university/
+JointAdmitAgent/
 ├── main.py                 # CLI 入口
 ├── config.py               # 配置（API key、路径、常量）
 ├── scraper.py              # 教育部平台数据采集
@@ -127,6 +148,10 @@ Sino_foreign_joint_venture_university/
 │   └── foreign_universities.json   # 外方院校画像库
 ├── streamlit_app/          # Web 应用
 │   ├── app.py              # 主入口（路由 + 会话恢复）
+│   ├── requirements.txt    # Web 应用依赖
+│   ├── .streamlit/
+│   │   ├── config.toml             # 主题与服务器配置
+│   │   └── secrets.toml            # API Key（不入版本控制）
 │   ├── pages/              # 子页面
 │   │   ├── home.py                 # 首页
 │   │   ├── login.py                # 登录/注册
@@ -135,16 +160,17 @@ Sino_foreign_joint_venture_university/
 │   │   ├── 3_📋_compare.py        # 项目对比
 │   │   ├── 4_💬_ai_consult.py     # AI 智能咨询（流式）
 │   │   ├── 5_🔐_admin.py          # 管理面板
-│   │   └── 6_📈_dashboard.py      # 使用统计
+│   │   ├── 6_📈_dashboard.py      # 使用统计
+│   │   └── 7_👤_profile.py        # 个人设置
 │   └── utils/              # 工具模块
 │       ├── auth.py                 # 认证（Cookie 会话持久化）
-│       ├── db.py                   # SQLite 数据库
+│       ├── db.py                   # 数据库（SQLite 本地 / Turso 云端）
 │       ├── data_loader.py          # 数据加载
 │       ├── filters.py              # 筛选逻辑
-│       ├── llm_client.py           # LLM 调用（支持流式）
+│       ├── llm_client.py           # LLM 调用（Claude / 智谱，支持流式）
 │       └── logger.py               # 操作日志
-├── requirements.txt
-└── .env.example
+├── requirements.txt        # CLI 工具依赖
+└── .env.example            # 环境变量模板
 ```
 
 ## 数据字段说明
@@ -170,7 +196,7 @@ Sino_foreign_joint_venture_university/
 - Anthropic Claude SDK（AI 分析与咨询，支持流式输出）
 - 智谱 GLM / ZhipuAI SDK（可选备用 LLM，支持流式输出）
 - Streamlit + Plotly（Web 可视化）
-- SQLite（用户系统与日志）
+- SQLite / Turso（用户系统与日志，本地用 SQLite，Cloud 用 Turso）
 
 ## 注意事项
 
