@@ -3,7 +3,7 @@ import json
 
 from utils.data_loader import load_programs, programs_to_df
 from utils.llm_client import get_available_backends, get_admin_selected_backend, chat_stream
-from utils.filters import filter_programs
+from utils.filters import filter_programs, expand_query_to_filters
 from utils.logger import log_action
 from utils.auth import check_ai_access
 
@@ -66,6 +66,19 @@ SYSTEM_PROMPT = f"""你是一位资深的中外合作办学咨询师，帮助考
 
 你掌握 {len(programs)} 个经教育部批准的中外合作办学项目的数据，覆盖北京、上海、山东、安徽、江西、山西等地区。
 
+【常用术语与俗称解释】
+你必须正确理解用户查询中的以下术语和俗称:
+- 长三角: 指上海市、江苏省、浙江省、安徽省（核心城市：上海、南京、苏州、杭州、合肥等）
+- 珠三角: 指广东省（核心城市：广州、深圳、珠海等）
+- 京津冀: 指北京市、天津市、河北省
+- 92: 985和211院校的合称（取985的"9"和211的"2"）
+- 双一流: 世界一流大学和一流学科建设高校
+- 4+0: 四年全部在国内就读、获得中外双学位的合作办学模式
+- 2+2: 国内两年+国外两年的合作办学模式
+- 3+1: 国内三年+国外一年的合作办学模式
+- QS: QS世界大学排名
+- 双证: 同时获得国内和国外学位证书
+
 回答规则:
 1. 始终使用中文回答
 2. 推荐时说明理由，对比优劣
@@ -74,6 +87,7 @@ SYSTEM_PROMPT = f"""你是一位资深的中外合作办学咨询师，帮助考
 5. 提醒考生关注批准有效期和最新招生简章
 6. 学费、分数等数据请注明来源年份
 7. 回答尽量简洁有条理，使用列表和分段
+8. 当用户使用上述术语/俗称时，正确解析其含义，只推荐符合条件的项目
 
 你可以帮助:
 - 根据分数/专业/预算/地域推荐项目
@@ -131,10 +145,25 @@ if needs_reply:
 
     with st.chat_message("assistant"):
         with st.spinner("💭 AI 思考中..."):
+            query_filters = expand_query_to_filters(prompt)
             kw_filters = {"keyword": prompt[:20], "active_only": True}
+            if query_filters["regions"]:
+                kw_filters["regions"] = query_filters["regions"]
+            if query_filters["tiers"]:
+                kw_filters["chinese_tiers"] = query_filters["tiers"]
+
             relevant = filter_programs(df, kw_filters)
             if len(relevant) == 0:
-                relevant = df[df["状态"] == "active"].head(30)
+                fallback_filters = {"active_only": True}
+                if query_filters["regions"]:
+                    fallback_filters["regions"] = query_filters["regions"]
+                if query_filters["tiers"]:
+                    fallback_filters["chinese_tiers"] = query_filters["tiers"]
+                relevant = filter_programs(df, fallback_filters)
+                if len(relevant) == 0:
+                    relevant = df[df["状态"] == "active"].head(30)
+                else:
+                    relevant = relevant.head(30)
             else:
                 relevant = relevant.head(25)
 
