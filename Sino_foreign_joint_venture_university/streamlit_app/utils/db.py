@@ -1,14 +1,24 @@
 import sqlite3
 from pathlib import Path
+import streamlit as st
 
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "auth.db"
 
 
 def get_connection():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
+    turso_url = st.secrets.get("TURSO_DB_URL")
+    turso_token = st.secrets.get("TURSO_AUTH_TOKEN")
+
+    if turso_url and turso_token:
+        import libsql_experimental as libsql
+        conn = libsql.connect("local.db", sync_url=turso_url, auth_token=turso_token)
+        conn.sync()
+    else:
+        DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL")
+
     return conn
 
 
