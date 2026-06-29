@@ -15,15 +15,18 @@ DATA_DIR = next((d for d in _CANDIDATE_DIRS if (d / "programs.json").exists() or
 
 @st.cache_data(ttl=3600)
 def load_programs():
-    """加载项目数据（优先用 enriched）"""
+    """加载项目数据（取数量最多的版本）"""
+    candidates = []
     for name in ["programs_enriched.json", "programs.json"]:
         path = DATA_DIR / name
         if path.exists():
             with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             if data:
-                return data
-    return []
+                candidates.append(data)
+    if not candidates:
+        return []
+    return max(candidates, key=len)
 
 
 @st.cache_data(ttl=3600)
