@@ -46,8 +46,8 @@ with col3:
     countries = df["外方国家"].replace("", pd.NA).dropna().nunique()
     st.metric("合作国家", f"{countries}")
 with col4:
-    top_count = len(df[df["中方层级"].str.contains("985", na=False)])
-    st.metric("985院校项目", f"{top_count}")
+    top_count = len(df[df["中方层级"].str.contains("985|211", na=False)])
+    st.metric("985/211院校项目", f"{top_count}")
 
 st.divider()
 
