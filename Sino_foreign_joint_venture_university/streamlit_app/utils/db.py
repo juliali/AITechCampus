@@ -89,8 +89,11 @@ class _RowDict:
 
     def __init__(self, columns, row):
         self._data = dict(zip(columns, row))
+        self._values = list(row)
 
     def __getitem__(self, key):
+        if isinstance(key, int):
+            return self._values[key]
         return self._data[key]
 
     def __contains__(self, key):
